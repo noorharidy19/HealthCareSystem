@@ -114,7 +114,7 @@
           <td>User</td>
           <td>Active</td>
           <td>
-            <button class="btn btn-sm btn-primary">Edit</button>
+            <button class="btn btn-sm btn-primary" ><a href="edituser.php">Edit</a></button>
             <button class="btn btn-sm btn-danger" onclick="confirmDelete()">Delete</button>
           </td>
         </tr>
