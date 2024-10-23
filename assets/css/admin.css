@@ -1,0 +1,43 @@
+.dashboard-cards {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+}
+
+.dashboard-cards .card {
+  margin: 10px;
+  flex: 1;
+  min-width: 200px;
+  max-width: 300px;
+}
+
+.table {
+  margin-top: 30px;
+}
+
+/* Adjust footer */
+footer {
+  background-color: #333;
+  color: white;
+  padding: 20px 0;
+  text-align: center;
+}
+
+.footer-menu {
+  list-style-type: none;
+  padding: 0;
+}
+
+.footer-menu li {
+  display: inline;
+  padding-right: 15px;
+}
+
+.footer-menu a {
+  color: white;
+  text-decoration: none;
+}
+
+.footer-menu a:hover {
+  text-decoration: underline;
+}
