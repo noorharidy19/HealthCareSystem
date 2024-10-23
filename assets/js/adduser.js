@@ -85,3 +85,14 @@ function toggleDoctorField() {
 
     return isValid;
   }
+  function confirmDelete() {
+    const userConfirmed = confirm("Are you sure you want to delete?");
+    if (userConfirmed) {
+        // Proceed with the deletion
+        alert("User has been deleted."); 
+        // Here you can add the code to delete the user, such as submitting a form or making an AJAX request.
+    } else {
+        // If user cancels, do nothing
+        alert("User deletion canceled.");
+    }
+}
