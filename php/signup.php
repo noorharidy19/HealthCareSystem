@@ -17,6 +17,14 @@
 <div class="container form-container">
     <h2 class="form-header">Register</h2>
 
+     <?php
+       // Display error message if it exists
+       if (isset($_SESSION['error'])) {
+        echo "<div class='error'>" . htmlspecialchars($_SESSION['error']) . "</div>";
+        unset($_SESSION['error']); // Clear the error after displaying it
+      }
+    ?>
+
     <form id="userForm" action="saveUser.php" method="POST" onsubmit="return validateForm()">
       
       <!-- Patient Name -->
@@ -120,10 +128,17 @@
 
 
   <?php
+     session_start(); 
+     include('DB.php'); 
+     global $conn;
+     
+     $error="";
+     if ($conn->connect_error) {
+      die("Connection failed: " . $conn->connect_error);
+  }
 
-include('DB.php'); // Include database connection
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
+     if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $name = htmlspecialchars($_POST["name"]);
     $email = htmlspecialchars($_POST["email"]);
     $password = htmlspecialchars($_POST["password"]);
@@ -132,6 +147,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $dob = htmlspecialchars($_POST["dob"]);
     
     $userType = 'patient'; // Default user type
+  
+    
+
+    // Check for existing email
+    $checkEmailQuery = "SELECT * FROM users WHERE email = ?";
+    $stmt = $conn->prepare($checkEmailQuery);
+    $stmt->bind_param("s", $email);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    
+    if ($result->num_rows > 0) {
+        // Email already exists
+        $_SESSION['error'] = "Email already exists. Please use a different email.";
+        header("Location: signup.php");
+        exit();
+    }
 
     // Hash the password for security
     $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
@@ -139,14 +170,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Prepare SQL insert statement
     $sql = "INSERT INTO users (name, email, password, phone, address, userType, DOb) 
             VALUES ('$name', '$email', '$hashedPassword', '$phone', '$address', '$userType', '$dob')";
-    
-    // Execute the query
-    if (mysqli_query($conn, $sql)) {
-        header("Location: index.php");
-        exit();
-    } else {
-        echo "Error: " . $sql . "<br>" . mysqli_error($conn);
-    }
+
+
+if ($user->createUser()) {
+  header("Location: index.php"); // Redirect after successful creation
+  exit();
+} else {
+  echo "Failed to create user. Please try again.";
+}
+   
 }
 ?>
 

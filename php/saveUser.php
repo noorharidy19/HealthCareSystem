@@ -1,7 +1,10 @@
 <?php
-
+session_start();
 require 'DB.php'; 
 require 'Classes.php'; 
+global $conn;
+
+
 
 // Get form data
 $name = $_POST['name'];
@@ -23,6 +26,8 @@ $newUser->phone = $phone;
 $newUser->address = $address;
 $newUser->userType = 'patient'; // Assign default userType or change as needed
 $newUser->DOb = $dob;
+
+
 
 // Call the method to create the user
 if ($newUser->createUser()) {

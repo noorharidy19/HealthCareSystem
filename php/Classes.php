@@ -1,6 +1,6 @@
-<?php include 'DB.php'; ?>
-<?php
 
+<?php
+include 'DB.php';
 class User{
 public $name;
 public $email;
@@ -40,7 +40,8 @@ public $DOb;
         $this->ID = $stmt->insert_id; // Get the ID of the newly created user
         return true; // Successfully created user
     } else {
-        return false; // Failed to create user
+      error_log("Database Error: " . $stmt->error); // Log to a file
+      return false; // Failed to create user
     }
 }
 
