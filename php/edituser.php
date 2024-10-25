@@ -15,17 +15,7 @@
 <div class="container form-container">
   <br>
     <h2 class="form-header">Edit User</h2>
-    <form id="userForm" action="update-user.php" method="POST" onsubmit="return validateForm()">
-      <!-- User Type Selection -->
-      <div class="form-group">
-        <label for="userType">User Type</label>
-        <select name="userType" id="userType" class="form-control" onchange="toggleDoctorField()">
-          <option value="">Select User Type</option>
-          <option value="Patient">Patient</option>
-          <option value="Doctor">Doctor</option>
-        </select>
-        <small class="error-message" id="userTypeError"></small>
-      </div>
+    <form id="userForm" action="update-user.php" method="POST" onsubmit="return validateFormedit()">
 
       <!-- Patient Name -->
       <div class="form-group">
@@ -67,11 +57,6 @@
       </div>
 
       <!-- Doctor Specialization (Shown only if Doctor is selected) -->
-      <div class="form-group hidden" id="specializationField">
-        <label for="specialization">Doctor Specialization</label>
-        <input type="text" name="specialization" id="specialization" class="form-control">
-        <small class="error-message" id="specializationError"></small>
-      </div>
 
       <!-- Submit Button -->
       <div class="btn-container">
