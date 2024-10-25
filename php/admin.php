@@ -92,7 +92,7 @@
     <h2 class="text-center mt-5">Admin Dashboard Overview</h2>
     <p class="text-center">Here you can manage all aspects of the system, from user accounts to appointments and reports.</p>
     <div class="add-btn">
-      <a href="adduser.php" class="btn btn-sm btn-primary">Add New User</a>
+      <a href="adduser.php" class="btn btn-sm btn-primary">Add User</a>
     </div>
 
     <table class="table table-striped">
@@ -122,6 +122,17 @@
       </tbody>
     </table>
   </div>
+  <!-- PopUp Container -->
+  <div id="confirmModal" class="modal">
+    <div class="modal-content">
+        <p>Are you sure you want to delete?</p>
+        <div class="modal-buttons">
+            <button id="confirmDeleteBtn" class="btn btn2">Yes</button>
+            <button id="cancelDeleteBtn" class="btn btn-secondary">Cancel</button>
+        </div>
+    </div>
+</div>
+
 
   <!-- Footer -->
   <footer>

@@ -8,7 +8,7 @@
 
   <link rel="stylesheet" href="../assets/css/bootstrap.css">
   <link rel="stylesheet" href="../assets/css/theme.css">
-  <link rel="stylesheet" href="../assets/css/adduser.css">
+  <link rel="stylesheet" href="../assets/css/signup.css">
 </head>
 <body>
 
@@ -115,6 +115,6 @@
 
   <script src="../assets/js/jquery-3.5.1.min.js"></script>
   <script src="../assets/js/bootstrap.bundle.min.js"></script>
-  <script src="../assets/js/adduser.js"></script>
+  <script src="../assets/js/signup.js"></script>
 </body>
 </html>
