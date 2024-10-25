@@ -39,6 +39,10 @@
         <input type="email" name="email" id="email" class="form-control">
         <small class="error-message" id="emailError"></small>
       </div>
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" name="password" id="password" class="form-control">
+        <small class="error-message" id="passwordError"></small>
 
       <!-- Phone Number -->
       <div class="form-group">
