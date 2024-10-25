@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -14,10 +16,9 @@
 
 <div class="container form-container">
     <h2 class="form-header">Register</h2>
-    <form id="userForm" action="index.php" method="POST" onsubmit="return validateForm()">
+
+    <form id="userForm" action="saveUser.php" method="POST" onsubmit="return validateForm()">
       
-
-
       <!-- Patient Name -->
       <div class="form-group">
         <label for="name">
@@ -116,5 +117,40 @@
   <script src="../assets/js/jquery-3.5.1.min.js"></script>
   <script src="../assets/js/bootstrap.bundle.min.js"></script>
   <script src="../assets/js/signup.js"></script>
+
+
+  <?php
+
+include('DB.php'); // Include database connection
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $name = htmlspecialchars($_POST["name"]);
+    $email = htmlspecialchars($_POST["email"]);
+    $password = htmlspecialchars($_POST["password"]);
+    $phone = htmlspecialchars($_POST["phone"]);
+    $address = htmlspecialchars($_POST["address"]);
+    $dob = htmlspecialchars($_POST["dob"]);
+    
+    $userType = 'patient'; // Default user type
+
+    // Hash the password for security
+    $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+
+    // Prepare SQL insert statement
+    $sql = "INSERT INTO users (name, email, password, phone, address, userType, DOb) 
+            VALUES ('$name', '$email', '$hashedPassword', '$phone', '$address', '$userType', '$dob')";
+    
+    // Execute the query
+    if (mysqli_query($conn, $sql)) {
+        header("Location: index.php");
+        exit();
+    } else {
+        echo "Error: " . $sql . "<br>" . mysqli_error($conn);
+    }
+}
+?>
+
+
+
 </body>
 </html>
