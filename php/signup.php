@@ -33,7 +33,7 @@
         <label for="email">
         <img src="..\assets\img\icons\email.png" alt="person Icon" style="width: 20px; vertical-align: middle; margin-right: 5px;">
         Email Address</label>
-        <input type="email" name="email" id="email" class="form-control" >
+        <input type="text" name="email" id="email" class="form-control" >
         <small class="error-message" id="emailError"></small>
       </div>
 
