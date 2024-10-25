@@ -14,7 +14,7 @@
 
 <div class="container form-container">
     <h2 class="form-header">Register</h2>
-    <form id="userForm" action="save-user.php" method="POST" onsubmit="return validateForm()">
+    <form id="userForm" action="index.php" method="POST" onsubmit="return validateForm()">
       
 
 
@@ -103,7 +103,7 @@
       <!-- Submit Button -->
       <div class="btn-container">
         <a href="index.php" class="btn btn-secondary btn-back">Back</a>
-        <button type="submit" class="btn btn-primary">Sign Up</button>
+        <button type="submit" class="btn btn-primary" href="index.php">Sign Up</button>
       </div>
     </form>
   </div>
