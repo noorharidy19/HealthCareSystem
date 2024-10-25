@@ -13,6 +13,7 @@
 <body>
 
 <div class="container form-container">
+  <br>
     <h2 class="form-header">Edit User</h2>
     <form id="userForm" action="update-user.php" method="POST" onsubmit="return validateForm()">
       <!-- User Type Selection -->
@@ -70,8 +71,8 @@
 
       <!-- Submit Button -->
       <div class="btn-container">
-        <a href="admin.php" class="btn btn-secondary btn-back">Back to Dashboard</a>
-        <button type="submit" class="btn btn-primary">Update User</button>
+        <a href="admin.php" class="btn btn-back">Dashboard</a>
+        <button type="submit" class="btn btn-primary">Edit User</button>
       </div>
     </form>
   </div>

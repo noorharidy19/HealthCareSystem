@@ -87,15 +87,30 @@ function toggleDoctorField() {
     return isValid;
   }
   function confirmDelete() {
-    const userConfirmed = confirm("Are you sure you want to delete?");
-    if (userConfirmed) {
-        // Proceed with the deletion
-        alert("User has been deleted."); 
-        // Here you can add the code to delete the user, such as submitting a form or making an AJAX request.
-    } else {
-        // If user cancels, do nothing
-        alert("User deletion canceled.");
-    }
+    // Show the modal
+    document.getElementById("confirmModal").style.display = "block";
+
+    // Handle confirm delete button
+    document.getElementById("confirmDeleteBtn").onclick = function() {
+      // Show a confirmation message in the modal
+      document.querySelector(".modal-content p").innerText = "User has been deleted.";
+      
+      // Hide the confirm and cancel buttons after deletion
+      document.querySelector(".modal-buttons").style.display = "none";
+      
+      // Close the modal after a short delay
+      setTimeout(() => {
+          document.getElementById("confirmModal").style.display = "none";
+          // Optionally reset modal content for next use
+          document.querySelector(".modal-content p").innerText = "Are you sure you want to delete?";
+          document.querySelector(".modal-buttons").style.display = "flex";
+      }, 900);
+  };
+
+    // Handle cancel button
+    document.getElementById("cancelDeleteBtn").onclick = function() {
+        document.getElementById("confirmModal").style.display = "none";
+    };
 }
 
 
