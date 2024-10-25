@@ -17,76 +17,130 @@
     <form id="userForm" action="save-user.php" method="POST" onsubmit="return validateForm()">
       <!-- User Type Selection -->
       <div class="form-group">
-        <label for="userType">User Type</label>
-        <select name="userType" id="userType" class="form-control"  onchange="toggleDoctorField()">
-          <option value="">Select User Type</option>
-          <option value="Patient">Patient</option>
-          <option value="Doctor">Doctor</option>
-        </select>
-        <small class="error-message" id="userTypeError"></small>
-      </div>
+      <label for="userType">
+      <img src="..\assets\img\icons\person.png" alt="person Icon" style="width: 20px; vertical-align: middle; margin-right: 5px;">   
+      |
+      <img src="..\assets\img\icons\doctor2.png" alt="person Icon" style="width: 20px; vertical-align: middle; margin-right: 5px;"> 
+      <br>
+       User Type</label>
+    <div>
+        <input type="radio" id="patient" name="userType" value="Patient" onclick="toggleDoctorField()"  style="display: inline-block; margin-right: 5px;">
+        <label for="patient"  style="display: inline-block; margin-right: 20px;">Patient</label>
+   
+        <input type="radio" id="doctor" name="userType" value="Doctor" onclick="toggleDoctorField()" style="display: inline-block; margin-right: 5px;">
+        <label for="doctor"  style="display: inline-block;">Doctor</label>
+    </div>
+    <small class="error-message" id="userTypeError"></small>
+</div>
+
+<!-- Doctor Specialization (Shown only if Doctor is selected) -->
+<div class="form-group hidden" id="specializationField">
+  <label for="specialization">
+  <img src="..\assets\img\icons\doctor2.png" alt="person Icon" style="width: 20px; vertical-align: middle; margin-right: 5px;"> 
+  Doctor Specialization</label>
+  <select name="specialization" id="specialization" class="form-control">
+    <option value="">Select Specialization</option>
+    <option value="Cardiology">Cardiology</option>
+    <option value="Dermatology">Dermatology</option>
+    <option value="Pediatrics">Pediatrics</option>
+    <option value="Neurology">Neurology</option>
+    <option value="Orthopedics">Orthopedics</option>
+    <!-- Add more specializations as needed -->
+  </select>
+  <small class="error-message" id="specializationError"></small>
+</div>
+
 
       <!-- Patient Name -->
       <div class="form-group">
-        <label for="name">Name</label>
+        <label for="name">
+        <img src="..\assets\img\icons\person.png" alt="person Icon" style="width: 20px; vertical-align: middle; margin-right: 5px;"> 
+        Name
+        </label>
         <input type="text" name="name" id="name" class="form-control">
         <small class="error-message" id="nameError"></small>
       </div>
 
       <!-- Patient Email -->
       <div class="form-group">
-        <label for="email">Email Address</label>
+        <label for="email">
+        <img src="..\assets\img\icons\email.png" alt="person Icon" style="width: 20px; vertical-align: middle; margin-right: 5px;">
+        Email Address</label>
         <input type="email" name="email" id="email" class="form-control" >
         <small class="error-message" id="emailError"></small>
       </div>
 
+
+     <!-- Password -->
+<div class="form-group">
+    <label for="password">
+    <img src="..\assets\img\icons\password.png" alt="person Icon" style="width: 20px; vertical-align: middle; margin-right: 5px;">
+    Password</label>
+    <input type="password" name="password" id="password" class="form-control">
+    <small class="error-message" id="passwordError"></small>
+</div>
+
+<!-- Confirm Password -->
+<div class="form-group">
+    <label for="confirmPassword">
+    <img src="..\assets\img\icons\password.png" alt="person Icon" style="width: 20px; vertical-align: middle; margin-right: 5px;">  
+    Confirm Password</label>
+    <input type="password" name="confirmPassword" id="confirmPassword" class="form-control">
+    <small class="error-message" id="confirmPasswordError"></small>
+</div>
+
       <!-- Phone Number -->
       <div class="form-group">
-        <label for="phone">Phone Number</label>
+        <label for="phone">
+        <img src="..\assets\img\icons\phone.png" alt="person Icon" style="width: 20px; vertical-align: middle; margin-right: 5px;">  
+        Phone Number</label>
         <input type="tel" name="phone" id="phone" class="form-control" >
         <small class="error-message" id="phoneError"></small>
       </div>
 
       <!-- Gender -->
       <div class="form-group">
-        <label for="gender">Gender</label>
-        <select name="gender" id="gender" class="form-control" >
-          <option value="">Select Gender</option>
-          <option value="Male">Male</option>
-          <option value="Female">Female</option>
-          <option value="Other">Other</option>
-        </select>
-        <small class="error-message" id="genderError"></small>
-      </div>
+      <label for="gender">
+      <img src="..\assets\img\icons\gender.png" alt="person Icon" style="width: 20px; vertical-align: middle; margin-right: 5px;">  
+      Gender</label>
+    <div>
+        <input type="radio" id="male" name="gender" value="Male" style="display: inline-block; margin-right: 5px;">
+        <label for="male" style="display: inline-block; margin-right: 20px;">Male</label>
+
+        <input type="radio" id="female" name="gender" value="Female" style="display: inline-block; margin-right: 5px;">
+        <label for="female" style="display: inline-block;">Female</label>
+    </div>
+    <small class="error-message" id="genderError"></small>
+</div>
 
       <!-- Date of Birth -->
       <div class="form-group">
-        <label for="dob">Date of Birth</label>
+        <label for="dob">
+        <img src="..\assets\img\icons\calendar.png" alt="person Icon" style="width: 20px; vertical-align: middle; margin-right: 5px;"> 
+        Date of Birth</label>
         <input type="date" name="dob" id="dob" class="form-control" >
         <small class="error-message" id="dobError"></small>
       </div>
 
       <!-- Address -->
       <div class="form-group">
-        <label for="address">Address</label>
+        <label for="address">
+        <img src="..\assets\img\icons\address.png" alt="person Icon" style="width: 20px; vertical-align: middle; margin-right: 5px;">  
+        Address</label>
         <textarea name="address" id="address" class="form-control" rows="3" ></textarea>
         <small class="error-message" id="addressError"></small>
       </div>
 
-      <!-- Doctor Specialization (Shown only if Doctor is selected) -->
-      <div class="form-group hidden" id="specializationField">
-        <label for="specialization">Doctor Specialization</label>
-        <input type="text" name="specialization" id="specialization" class="form-control">
-        <small class="error-message" id="specializationError"></small>
-      </div>
+    
 
       <!-- Submit Button -->
       <div class="btn-container">
-        <a href="admin.php" class="btn btn-secondary btn-back">Back to Dashboard</a>
+        <a href="index.php" class="btn btn-secondary btn-back">Back to Dashboard</a>
         <button type="submit" class="btn btn-primary">Add User</button>
       </div>
     </form>
   </div>
+
 
 
   <script src="../assets/js/jquery-3.5.1.min.js"></script>
