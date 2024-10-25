@@ -13,7 +13,8 @@
 <body>
 
 <div class="container form-container">
-    <h2 class="form-header">Add New User</h2>
+  <br>
+    <h2 class="form-header">Add User</h2>
     <form id="userForm" action="save-user.php" method="POST" onsubmit="return validateForm()">
       <!-- User Type Selection -->
       <div class="form-group">
