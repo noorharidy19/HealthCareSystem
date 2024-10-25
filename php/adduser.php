@@ -135,7 +135,7 @@
 
       <!-- Submit Button -->
       <div class="btn-container">
-        <a href="index.php" class="btn btn-secondary btn-back">Back to Dashboard</a>
+        <a href="index.php" class="btn btn-back">Dashboard</a>
         <button type="submit" class="btn btn-primary">Add User</button>
       </div>
     </form>
