@@ -1,12 +1,14 @@
 <?php
 $servername = "localhost";
-$username = "root";
-$password = "";
-$DB = "health";
+$username = "root"; // Replace with your database username
+$password = ""; // Replace with your database password
+$dbname = "healthsystem"; // Replace with your database name
 
-$conn = mysqli_connect($servername,$username,$password,$DB);
+// Create connection
+$GLOBALS['conn'] = new mysqli($servername, $username, $password, $dbname);
 
-
-if(!$conn){
-    die("Connection failed: " . mysqli_connect_error());
+// Check connection
+if ($GLOBALS['conn']->connect_error) {
+    die("Connection failed: " . $GLOBALS['conn']->connect_error);
 }
+?>

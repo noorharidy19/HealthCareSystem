@@ -1,6 +1,8 @@
 
 <?php
+
 include 'DB.php';
+
 class User{
 public $name;
 public $email;
@@ -10,6 +12,7 @@ public $address;
 public $ID;
 public $userType;
 public $DOb;
+public $gender; 
    function __construct($id) {
    if($id != 0){
     $sql="select * from users where 	ID=$id";
@@ -23,6 +26,7 @@ public $DOb;
         $this->address = $row['address'];
         $this->userType = $row['userType']; //admin , doctor, patient
         $this->DOb = $row['DOb'];
+        $this->gender=$row['gender'];
     }
 
       }
@@ -45,5 +49,23 @@ public $DOb;
     }
 }
 
+
+    public static function addUser($name, $email, $password, $phone, $address, $userType, $DOb, $gender) {
+        
+
+        // Prepare the SQL statement
+        $sql = "INSERT INTO users (Name, phone, Email, Password, gender, Address, UserType, DOB) 
+                VALUES ('$name', '$phone', '$email', '$password', '$gender', '$address', '$userType', '$DOb')";
+
+        // Execute the query
+        if (mysqli_query($GLOBALS['conn'], $sql)) {
+            return true; // User added successfully
+        } else {
+            // Debugging: Print error message
+            error_log("Failed to execute query: " . mysqli_error($GLOBALS['conn']));
+            return false; // Failed to add user
+        }
+    }
 }
+
 ?>

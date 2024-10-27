@@ -1,14 +1,14 @@
-function toggleDoctorField() {
-  var doctorRadio = document.getElementById('doctor');  // The Doctor radio button
-  var specializationField = document.getElementById('specializationField');  // Specialization field container
+// function toggleDoctorField() {
+//   var doctorRadio = document.getElementById('doctor');  // The Doctor radio button
+//   var specializationField = document.getElementById('specializationField');  // Specialization field container
 
-  if (doctorRadio.checked) {
-      specializationField.classList.remove('hidden');  // Show the specialization field if Doctor is selected
-  } else {
-      specializationField.classList.add('hidden');  // Hide the specialization field if not Doctor
-      document.getElementById('specialization').value = '';  // Clear the selection if hidden
-  }
-}
+//   if (doctorRadio.checked) {
+//       specializationField.classList.remove('hidden');  // Show the specialization field if Doctor is selected
+//   } else {
+//       specializationField.classList.add('hidden');  // Hide the specialization field if not Doctor
+//       document.getElementById('specialization').value = '';  // Clear the selection if hidden
+//   }
+// }
 
   function confirmDelete() {
     // Show the modal
@@ -49,7 +49,7 @@ function toggleDoctorField() {
     document.getElementById('dobError').innerText = '';
     document.getElementById('addressError').innerText = '';
     document.getElementById('passwordError').innerText = '';
-    document.getElementById('specializationError').innerText = '';
+    // document.getElementById('specializationError').innerText = '';
 
     // User Type Validation
     let userType = document.querySelector('input[name="userType"]:checked');
@@ -75,12 +75,13 @@ function toggleDoctorField() {
       isValid = false;
     }
     //password
-    let password = document.getElementById('password').value.trim();
-    let passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
-    if (!passwordPattern.test(password)) {
-      document.getElementById('passwordError').innerText = 'Please enter a valid password.';
+    if (password === "") {
+      document.getElementById('passwordError').innerText = 'Please enter a password.';
       isValid = false;
-    }
+    }else if (password.length < 8) {
+        document.getElementById('passwordError').innerText = 'Password must be at least 8 characters long.';
+        isValid = false;
+      }
 
     // Phone Validation
     let phone = document.getElementById('phone').value.trim();
@@ -112,29 +113,29 @@ function toggleDoctorField() {
     }
 
     // Doctor Specialization Validation (only if Doctor is selected)
-    if (userType === "Doctor") {
-      let specialization = document.getElementById('specialization').value.trim();
-      if (specialization === "") {
-        document.getElementById('specializationError').innerText = 'Please enter the doctor\'s specialization.';
-        isValid = false;
-      }
-    }
+    // if (userType === "Doctor") {
+    //   let specialization = document.getElementById('specialization').value.trim();
+    //   if (specialization === "") {
+    //     document.getElementById('specializationError').innerText = 'Please enter the doctor\'s specialization.';
+    //     isValid = false;
+    //   }
+    // }
 
     return isValid;
   }
 
  
-  function toggleDoctorField() {
-    var doctorRadio = document.getElementById('doctor');  // The Doctor radio button
-    var specializationField = document.getElementById('specializationField');  // Specialization field container
+  // function toggleDoctorField() {
+  //   var doctorRadio = document.getElementById('doctor');  // The Doctor radio button
+  //   var specializationField = document.getElementById('specializationField');  // Specialization field container
   
-    if (doctorRadio.checked) {
-        specializationField.classList.remove('hidden');  // Show the specialization field if Doctor is selected
-    } else {
-        specializationField.classList.add('hidden');  // Hide the specialization field if not Doctor
-        document.getElementById('specialization').value = '';  // Clear the selection if hidden
-    }
-  }
+  //   if (doctorRadio.checked) {
+  //       specializationField.classList.remove('hidden');  // Show the specialization field if Doctor is selected
+  //   } else {
+  //       specializationField.classList.add('hidden');  // Hide the specialization field if not Doctor
+  //       document.getElementById('specialization').value = '';  // Clear the selection if hidden
+  //   }
+  // }
   
     // JavaScript Form Validation Function
     function validateFormedit() {
@@ -168,7 +169,11 @@ function toggleDoctorField() {
       if (password === "") {
         document.getElementById('passwordError').innerText = 'Please enter a password.';
         isValid = false;
-      }
+      }else if (password.length < 8) {
+          document.getElementById('passwordError').innerText = 'Password must be at least 8 characters long.';
+          isValid = false;
+        }
+
     
       // Phone Validation
       let phone = document.getElementById('phone').value.trim();
