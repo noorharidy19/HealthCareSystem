@@ -130,6 +130,8 @@
   <?php
      session_start(); 
      include('DB.php'); 
+     require('Classes.php');
+     $patientClass = new Classes($id);
      global $conn;
      
      $error="";
@@ -171,14 +173,16 @@
     $sql = "INSERT INTO users (name, email, password, phone, address, userType, DOb) 
             VALUES ('$name', '$email', '$hashedPassword', '$phone', '$address', '$userType', '$dob')";
 
+$newUserId = $patientClass->saveUser($name, $email, $password,$phone,$dob,$userType,$checkEmailQeury);
 
-if ($user->createUser()) {
-  header("Location: index.php"); // Redirect after successful creation
-  exit();
+if ($newUserId) {
+  $_SESSION['user_id'] = $newUserId;
+  header("Location: profile.php");
+  exit;
 } else {
-  echo "Failed to create user. Please try again.";
+  echo "Sign-up failed. Please try again.";
 }
-   
+
 }
 ?>
 

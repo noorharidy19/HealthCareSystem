@@ -44,6 +44,20 @@ public $DOb;
       return false; // Failed to create user
     }
 }
-
+// retrieve user information
+public function getUserInfo($userId) {
+  $stmt = $this->db->prepare("SELECT name, email, phone, address FROM users WHERE id = ?");
+  $stmt->execute([$userId]);
+  return $stmt->fetch(PDO::FETCH_ASSOC);
 }
+
+// retrieve user appointments
+public function getUserAppointments($userId) {
+  $stmt = $this->db->prepare("SELECT * FROM appointments WHERE user_id = ?");
+  $stmt->execute([$userId]);
+  return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+}
+
+
 ?>
