@@ -1,3 +1,37 @@
+<?php
+include('DB.php'); // Include your database connection
+include 'Classes.php'; // Include the User class
+
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    // Debugging: Print received form data
+    echo "<pre>";
+    print_r($_POST);
+    echo "</pre>";
+
+    // Sanitize form data
+    $name = htmlspecialchars($_POST['name']);
+    $email = htmlspecialchars($_POST['email']);
+    $password = htmlspecialchars($_POST['password']);
+    $phone = htmlspecialchars($_POST['phone']);
+    $address = htmlspecialchars($_POST['address']);
+    $userType = htmlspecialchars($_POST['userType']);
+    $DOb = htmlspecialchars($_POST['dob']);
+    $gender = htmlspecialchars($_POST['gender']);
+
+    // Add the user
+    if (User::addUser($name, $email, $password, $phone, $address, $userType, $DOb, $gender)) {
+        echo "User added successfully.";
+        // Redirect to a success page or dashboard
+        header("Location: admin.php");
+        exit();
+    } else {
+        echo "Failed to add user.";
+        // Redirect to an error page or show an error message
+        header("Location: adduser.php?error=1");
+        exit();
+    }
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -15,7 +49,7 @@
 <div class="container form-container">
   <br>
     <h2 class="form-header">Add User</h2>
-    <form id="userForm" action="save-user.php" method="POST" onsubmit="return validateForm()">
+    <form id="userForm" action="" method="POST" onsubmit="return validateForm()">
       <!-- User Type Selection -->
       <div class="form-group">
         <label for="userType">
@@ -35,7 +69,7 @@
       </div>
 
       <!-- Doctor Specialization (Shown only if Doctor is selected) -->
-      <div class="form-group hidden" id="specializationField">
+      <!-- <div class="form-group hidden" id="specializationField">
         <label for="specialization">
           <img src="../assets/img/icons/doctor2.png" alt="person Icon" style="width: 20px; vertical-align: middle; margin-right: 5px;"> 
           Doctor Specialization
@@ -48,9 +82,9 @@
           <option value="Neurology">Neurology</option>
           <option value="Orthopedics">Orthopedics</option>
           <!-- Add more specializations as needed -->
-        </select>
+        <!-- </select>
         <small class="error-message" id="specializationError"></small>
-      </div>
+      </div> --> 
 
       <!-- Patient Name -->
       <div class="form-group">
@@ -81,10 +115,13 @@
         <input type="tel" name="phone" id="phone" class="form-control">
         <small class="error-message" id="phoneError"></small>
       </div>
+
+      <!-- Password -->
       <div class="form-group">
         <label for="password">Password</label>
         <input type="password" name="password" id="password" class="form-control">
         <small class="error-message" id="passwordError"></small>
+      </div>
 
       <!-- Gender -->
       <div class="form-group">
@@ -127,7 +164,6 @@
       </div>
     </form>
   </div>
-
 
   <script src="../assets/js/jquery-3.5.1.min.js"></script>
   <script src="../assets/js/bootstrap.bundle.min.js"></script>

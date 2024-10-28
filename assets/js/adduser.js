@@ -1,41 +1,36 @@
-function toggleDoctorField() {
-  var doctorRadio = document.getElementById('doctor');  // The Doctor radio button
-  var specializationField = document.getElementById('specializationField');  // Specialization field container
+// function toggleDoctorField() {
+//   var doctorRadio = document.getElementById('doctor');  // The Doctor radio button
+//   var specializationField = document.getElementById('specializationField');  // Specialization field container
 
-  if (doctorRadio.checked) {
-      specializationField.classList.remove('hidden');  // Show the specialization field if Doctor is selected
-  } else {
-      specializationField.classList.add('hidden');  // Hide the specialization field if not Doctor
-      document.getElementById('specialization').value = '';  // Clear the selection if hidden
-  }
-}
+//   if (doctorRadio.checked) {
+//       specializationField.classList.remove('hidden');  // Show the specialization field if Doctor is selected
+//   } else {
+//       specializationField.classList.add('hidden');  // Hide the specialization field if not Doctor
+//       document.getElementById('specialization').value = '';  // Clear the selection if hidden
+//   }
+// }
 
-  function confirmDelete() {
+let userIdToDelete = null;
+
+function confirmDelete(userId) {
+    // Store the user ID to delete
+    userIdToDelete = userId;
+
     // Show the modal
     document.getElementById("confirmModal").style.display = "block";
 
     // Handle confirm delete button
     document.getElementById("confirmDeleteBtn").onclick = function() {
-      // Show a confirmation message in the modal
-      document.querySelector(".modal-content p").innerText = "User has been deleted.";
-      
-      // Hide the confirm and cancel buttons after deletion
-      document.querySelector(".modal-buttons").style.display = "none";
-      
-      // Close the modal after a short delay
-      setTimeout(() => {
-          document.getElementById("confirmModal").style.display = "none";
-          // Optionally reset modal content for next use
-          document.querySelector(".modal-content p").innerText = "Are you sure you want to delete?";
-          document.querySelector(".modal-buttons").style.display = "flex";
-      }, 900);
-  };
-
-    // Handle cancel button
-    document.getElementById("cancelDeleteBtn").onclick = function() {
-        document.getElementById("confirmModal").style.display = "none";
+        // Call the delete action
+        window.location.href = 'deleteuser.php?id=' + userIdToDelete;
     };
 }
+
+function closeModal() {
+    // Hide the modal
+    document.getElementById("confirmModal").style.display = "none";
+}
+
 
   function validateForm() {
     let isValid = true;
@@ -49,7 +44,7 @@ function toggleDoctorField() {
     document.getElementById('dobError').innerText = '';
     document.getElementById('addressError').innerText = '';
     document.getElementById('passwordError').innerText = '';
-    document.getElementById('specializationError').innerText = '';
+    // document.getElementById('specializationError').innerText = '';
 
     // User Type Validation
     let userType = document.querySelector('input[name="userType"]:checked');
@@ -75,12 +70,13 @@ function toggleDoctorField() {
       isValid = false;
     }
     //password
-    let password = document.getElementById('password').value.trim();
-    let passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
-    if (!passwordPattern.test(password)) {
-      document.getElementById('passwordError').innerText = 'Please enter a valid password.';
+    if (password === "") {
+      document.getElementById('passwordError').innerText = 'Please enter a password.';
       isValid = false;
-    }
+    }else if (password.length < 8) {
+        document.getElementById('passwordError').innerText = 'Password must be at least 8 characters long.';
+        isValid = false;
+      }
 
     // Phone Validation
     let phone = document.getElementById('phone').value.trim();
@@ -112,29 +108,29 @@ function toggleDoctorField() {
     }
 
     // Doctor Specialization Validation (only if Doctor is selected)
-    if (userType === "Doctor") {
-      let specialization = document.getElementById('specialization').value.trim();
-      if (specialization === "") {
-        document.getElementById('specializationError').innerText = 'Please enter the doctor\'s specialization.';
-        isValid = false;
-      }
-    }
+    // if (userType === "Doctor") {
+    //   let specialization = document.getElementById('specialization').value.trim();
+    //   if (specialization === "") {
+    //     document.getElementById('specializationError').innerText = 'Please enter the doctor\'s specialization.';
+    //     isValid = false;
+    //   }
+    // }
 
     return isValid;
   }
 
  
-  function toggleDoctorField() {
-    var doctorRadio = document.getElementById('doctor');  // The Doctor radio button
-    var specializationField = document.getElementById('specializationField');  // Specialization field container
+  // function toggleDoctorField() {
+  //   var doctorRadio = document.getElementById('doctor');  // The Doctor radio button
+  //   var specializationField = document.getElementById('specializationField');  // Specialization field container
   
-    if (doctorRadio.checked) {
-        specializationField.classList.remove('hidden');  // Show the specialization field if Doctor is selected
-    } else {
-        specializationField.classList.add('hidden');  // Hide the specialization field if not Doctor
-        document.getElementById('specialization').value = '';  // Clear the selection if hidden
-    }
-  }
+  //   if (doctorRadio.checked) {
+  //       specializationField.classList.remove('hidden');  // Show the specialization field if Doctor is selected
+  //   } else {
+  //       specializationField.classList.add('hidden');  // Hide the specialization field if not Doctor
+  //       document.getElementById('specialization').value = '';  // Clear the selection if hidden
+  //   }
+  // }
   
     // JavaScript Form Validation Function
     function validateFormedit() {
@@ -168,7 +164,11 @@ function toggleDoctorField() {
       if (password === "") {
         document.getElementById('passwordError').innerText = 'Please enter a password.';
         isValid = false;
-      }
+      }else if (password.length < 8) {
+          document.getElementById('passwordError').innerText = 'Password must be at least 8 characters long.';
+          isValid = false;
+        }
+
     
       // Phone Validation
       let phone = document.getElementById('phone').value.trim();
