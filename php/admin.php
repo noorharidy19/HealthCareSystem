@@ -96,28 +96,50 @@
     </div>
 
     <table class="table table-striped">
+    <table class="table table-striped">
       <thead>
         <tr>
           <th>#</th>
-          <th>User</th>
+          <th>Name</th>
           <th>Email</th>
-          <th>Role</th>
-          <th>Status</th>
-          <th>Actions</th>
+          <th>Password</th>
+          <th>Gender</th>
+          <th>Address</th>
+          <th>UserType</th>
+          <th>DOB</th>
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <td>1</td>
-          <td>John Doe</td>
-          <td>johndoe@example.com</td>
-          <td>User</td>
-          <td>Active</td>
-          <td>
-            <button class="btn btn-sm btn-primary" ><a href="edituser.php">Edit</a></button>
-            <button class="btn btn-sm btn-danger" onclick="confirmDelete()">Delete</button>
-          </td>
-        </tr>
+      <?php
+        include 'DB.php';
+
+        $sql = "SELECT * FROM users";
+        $result = mysqli_query($conn, $sql);
+
+        if (mysqli_num_rows($result) > 0) {
+          $counter = 1;
+          while ($row = mysqli_fetch_assoc($result)) {
+            echo "<tr>";
+            echo "<td>" . $counter++ . "</td>";
+            echo "<td>" . $row['Name'] . "</td>";
+            echo "<td>" . $row['Email'] . "</td>";
+            echo "<td>" . $row['Password'] . "</td>";
+            echo "<td>" . $row['gender'] . "</td>";
+            echo "<td>" . $row['Address'] . "</td>";
+            echo "<td>" . $row['UserType'] . "</td>";
+            echo "<td>" . $row['DOB'] . "</td>";
+            echo "<td>
+                    <a href='edituser.php?id=" . $row['ID'] . "' class='btn btn-sm btn-primary'>Edit</a>
+            <button class='btn btn-sm btn-danger' onclick='confirmDelete(\"" . $row['ID'] . "\")'>Delete</button>
+                  </td>";
+            echo "</tr>";
+          }
+        } else {
+          echo "<tr><td colspan='9' class='text-center'>No users found</td></tr>";
+        }
+
+        mysqli_close($conn);
+        ?>
         <!-- Additional rows as needed -->
       </tbody>
     </table>

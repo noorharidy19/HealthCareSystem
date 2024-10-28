@@ -19,13 +19,13 @@ public $gender;
     $result = mysqli_query($GLOBALS['conn'], $sql);
     if($row = mysqli_fetch_assoc($result)){
         $this->ID = $row['ID'];
-        $this->name = $row['name'];        
-        $this->email = $row['email'];
-        $this->password = $row['password'];
+        $this->name = $row['Name'];        
+        $this->email = $row['Email'];
+        $this->password = $row['Password'];
         $this->phone = $row['phone'];
-        $this->address = $row['address'];
-        $this->userType = $row['userType']; //admin , doctor, patient
-        $this->DOb = $row['DOb'];
+        $this->address = $row['Address'];
+        $this->userType = $row['UserType']; //admin , doctor, patient
+        $this->DOb = $row['DOB'];
         $this->gender=$row['gender'];
     }
 
@@ -66,6 +66,30 @@ public $gender;
             return false; // Failed to add user
         }
     }
-}
+    public static function editUser($name, $email, $password, $phone, $address, $DOB, $gender, $ID) {
+        // Ensure the connection is available
+        global $conn;
+    
+        // Prepare the SQL statement
+        $sql = "UPDATE users SET 
+                    Name='$name', 
+                    Email='$email', 
+                    Password='$password', 
+                    phone='$phone', 
+                    Address='$address', 
+                    DOB='$DOB', 
+                    gender='$gender' 
+                WHERE ID='$ID'";
+    
+        // Execute the query
+        if (mysqli_query($GLOBALS['conn'], $sql)) {
+            return true; // User updated successfully
+        } else {
+            // Debugging: Print error message
+            error_log("Failed to execute query: " . mysqli_error($conn));
+            return false; // Failed to update user
+        }
+    }
+  }
 
 ?>
