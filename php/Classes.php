@@ -1,8 +1,6 @@
 
 <?php
-
 include 'DB.php';
-
 class User{
 public $name;
 public $email;
@@ -12,21 +10,19 @@ public $address;
 public $ID;
 public $userType;
 public $DOb;
-public $gender; 
    function __construct($id) {
    if($id != 0){
     $sql="select * from users where 	ID=$id";
     $result = mysqli_query($GLOBALS['conn'], $sql);
     if($row = mysqli_fetch_assoc($result)){
         $this->ID = $row['ID'];
-        $this->name = $row['Name'];        
-        $this->email = $row['Email'];
-        $this->password = $row['Password'];
+        $this->name = $row['name'];        
+        $this->email = $row['email'];
+        $this->password = $row['password'];
         $this->phone = $row['phone'];
-        $this->address = $row['Address'];
-        $this->userType = $row['UserType']; //admin , doctor, patient
-        $this->DOb = $row['DOB'];
-        $this->gender=$row['gender'];
+        $this->address = $row['address'];
+        $this->userType = $row['userType']; //admin , doctor, patient
+        $this->DOb = $row['DOb'];
     }
 
       }
@@ -48,6 +44,61 @@ public $gender;
       return false; // Failed to create user
     }
 }
-
+// retrieve user information
+public function getUserInfo($userId) {
+  $stmt = $this->db->prepare("SELECT name, email, phone, address FROM users WHERE id = ?");
+  $stmt->execute([$userId]);
+  return $stmt->fetch(PDO::FETCH_ASSOC);
 }
+
+// retrieve user appointments
+public function getUserAppointments($userId) {
+  $stmt = $this->db->prepare("SELECT * FROM appointments WHERE user_id = ?");
+  $stmt->execute([$userId]);
+  return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+public static function addUser($name, $email, $password, $phone, $address, $userType, $DOb, $gender) {
+        
+
+  // Prepare the SQL statement
+  $sql = "INSERT INTO users (Name, phone, Email, Password, gender, Address, UserType, DOB) 
+          VALUES ('$name', '$phone', '$email', '$password', '$gender', '$address', '$userType', '$DOb')";
+
+  // Execute the query
+  if (mysqli_query($GLOBALS['conn'], $sql)) {
+      return true; // User added successfully
+  } else {
+      // Debugging: Print error message
+      error_log("Failed to execute query: " . mysqli_error($GLOBALS['conn']));
+      return false; // Failed to add user
+  }
+}
+public static function editUser($name, $email, $password, $phone, $address, $DOB, $gender, $ID) {
+  // Ensure the connection is available
+  global $conn;
+
+  // Prepare the SQL statement
+  $sql = "UPDATE users SET 
+              Name='$name', 
+              Email='$email', 
+              Password='$password', 
+              phone='$phone', 
+              Address='$address', 
+              DOB='$DOB', 
+              gender='$gender' 
+          WHERE ID='$ID'";
+
+  // Execute the query
+  if (mysqli_query($GLOBALS['conn'], $sql)) {
+      return true; // User updated successfully
+  } else {
+      // Debugging: Print error message
+      error_log("Failed to execute query: " . mysqli_error($conn));
+      return false; // Failed to update user
+  }
+}
+}
+
+
+
 ?>
