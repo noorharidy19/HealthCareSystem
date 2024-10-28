@@ -130,7 +130,7 @@
             echo "<td>" . $row['DOB'] . "</td>";
             echo "<td>
                     <a href='edituser.php?id=" . $row['ID'] . "' class='btn btn-sm btn-primary'>Edit</a>
-            <button class='btn btn-sm btn-danger' onclick='confirmDelete(\"" . $row['ID'] . "\")'>Delete</button>
+            <button class='btn btn-sm btn-danger' onclick='confirmDelete(" . $row['ID'] . ")'>Delete</button>
                   </td>";
             echo "</tr>";
           }
@@ -145,12 +145,12 @@
     </table>
   </div>
   <!-- PopUp Container -->
-  <div id="confirmModal" class="modal">
+  <div id="confirmModal" class="modal" style="display:none;">
     <div class="modal-content">
         <p>Are you sure you want to delete?</p>
         <div class="modal-buttons">
             <button id="confirmDeleteBtn" class="btn btn2">Yes</button>
-            <button id="cancelDeleteBtn" class="btn btn-secondary">Cancel</button>
+            <button id="cancelDeleteBtn" class="btn btn-secondary" onclick="closeModal()">Cancel</button>
         </div>
     </div>
 </div>

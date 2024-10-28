@@ -10,32 +10,27 @@
 //   }
 // }
 
-  function confirmDelete() {
+let userIdToDelete = null;
+
+function confirmDelete(userId) {
+    // Store the user ID to delete
+    userIdToDelete = userId;
+
     // Show the modal
     document.getElementById("confirmModal").style.display = "block";
 
     // Handle confirm delete button
     document.getElementById("confirmDeleteBtn").onclick = function() {
-      // Show a confirmation message in the modal
-      document.querySelector(".modal-content p").innerText = "User has been deleted.";
-      
-      // Hide the confirm and cancel buttons after deletion
-      document.querySelector(".modal-buttons").style.display = "none";
-      
-      // Close the modal after a short delay
-      setTimeout(() => {
-          document.getElementById("confirmModal").style.display = "none";
-          // Optionally reset modal content for next use
-          document.querySelector(".modal-content p").innerText = "Are you sure you want to delete?";
-          document.querySelector(".modal-buttons").style.display = "flex";
-      }, 900);
-  };
-
-    // Handle cancel button
-    document.getElementById("cancelDeleteBtn").onclick = function() {
-        document.getElementById("confirmModal").style.display = "none";
+        // Call the delete action
+        window.location.href = 'deleteuser.php?id=' + userIdToDelete;
     };
 }
+
+function closeModal() {
+    // Hide the modal
+    document.getElementById("confirmModal").style.display = "none";
+}
+
 
   function validateForm() {
     let isValid = true;
