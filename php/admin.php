@@ -35,12 +35,6 @@
               <a class="nav-link" href="admin.php">Dashboard</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="manage-users.php">Manage Users</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="manage-doctors.php">Manage Doctors</a>
-            </li>
-            <li class="nav-item">
               <a class="nav-link" href="appointments.php">Appointments</a>
             </li>
             <li class="nav-item">
@@ -61,15 +55,15 @@
     <div class="dashboard-cards">
       <div class="card text-center">
         <div class="card-body">
-          <h5 class="card-title">Total Users</h5>
-          <p class="card-text"><i class="fas fa-users fa-3x"></i></p>
+          <h5 class="card-title">Total Users</h5> 
+          <p class="card-text"><a href="ActiveUsers.php"><i class="fas fa-users fa-3x"></i></a></p> 
         </div>
       </div>
 
       <div class="card text-center">
         <div class="card-body">
           <h5 class="card-title">Active Doctors</h5>
-          <p class="card-text"><i class="fas fa-user-md fa-3x"></i></p>
+          <p class="card-text"><a href="ActiveDoctors.php"><i class="fas fa-user-md fa-3x"></a></i></p>
         </div>
       </div>
 
@@ -176,3 +170,4 @@
 
 </body>
 </html>
+
