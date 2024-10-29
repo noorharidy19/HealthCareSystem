@@ -21,6 +21,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $phone = htmlspecialchars($_POST["phone"]);
     $address = htmlspecialchars($_POST["address"]);
     $dob = htmlspecialchars($_POST["dob"]);
+    $gender= htmlspecialchars($_POST["gender"]);   
 
     $userType = 'patient'; // Default user type
 
@@ -52,7 +53,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     
     if ($stmt->execute()) {
         $_SESSION['user_id'] = $stmt->insert_id;
-        header("Location: profile.php");
+        header("Location: index.php");
         exit();
     } else {
         $_SESSION['error'] = "Sign-up failed. Please try again.";
