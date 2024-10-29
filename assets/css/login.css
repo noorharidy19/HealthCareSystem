@@ -1,0 +1,262 @@
+/* Importing Google Fonts - Poppins */
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap");
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+
+body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background: #ffffff;
+    color: #333;
+  }
+  
+  .container {
+    display: flex;
+    width: 1600px;
+    height: 705px;
+    border-radius: 5px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  }
+  
+
+/* Wrapper Title Styling */
+.title-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100px; /* Adjust the height as needed */
+    margin-bottom: 20px; /* Space below title */
+  }
+  
+  .title {
+    font-size: 28px;
+    font-weight: 600;
+    color: #333; /* Set the desired color */
+  }
+
+  .wrapper {
+    width:75%;
+    padding: 30px 40px;
+
+    padding-top: 80px;
+    padding-bottom: 30px;
+  }
+  
+  .wrapper .title {
+    font-size: 28px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 40px;
+  }
+
+
+/* Style for the input fields as lines */
+/* Style for the input fields as lines with icons */
+.wrapper form .row {
+    position: relative;
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.wrapper form .row input {
+    width: 45%; /* Adjust line length */
+    padding-left: 35px; /* Space for icon */
+    border: none;
+    border-bottom: 2px solid #949494; /* Line under input */
+    background: none;
+    font-size: 16px;
+    text-align: center;
+    padding: 5px 0;
+    outline: none;
+    border-radius: 0; /* No curved edges */
+}
+
+.wrapper form .row input::placeholder {
+    color: #999;
+    text-align: center;
+}
+
+/* Icon styling and positioning */
+.wrapper form .row i {
+    position: absolute;
+    top:60%;
+    left: 26%; /* Adjust as needed to place icon near line */
+    transform: translateX(-60%);
+    color: #16a085;
+    font-size: 20px;
+    pointer-events: none;
+}
+  
+
+
+/* "Forgot password?" link alignment */
+.wrapper form .pass {
+    text-align: center;
+    margin-top: 40px; /* Adds space above the link */
+    width: 60%; /* Match the input field width */
+    margin-left: 21%; /* Align to right of input */
+    color: #16a085;
+}
+
+.wrapper form .pass a {
+    color: #16a085;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.wrapper form .pass a:hover {
+    text-decoration: underline;
+}
+
+
+  /* Style adjustments for better alignment */
+  .row input:focus {
+    border-color: #16a085; /* Focus color for underline */
+  }
+
+
+/* Adjust Login button styling */
+.wrapper form .button {
+    margin-top: 40px; /* Space above the button */
+    display: flex; /* Ensures flex behavior */
+    justify-content: center; /* Center the button */
+}
+
+.wrapper form .button input {
+    width: 23%; /* Width of the button */
+    color: #fff;
+    background: #16a085; /* Green color */
+    border: none;
+    padding: 10px;
+    font-size: 18px;
+    font-weight: bold;
+    border-radius: 5px;
+    cursor: pointer;
+}
+  
+  .wrapper form .button input:hover {
+    background: #12876f; /* Darker green on hover */
+  }
+
+
+
+  form .row {
+    height: 50px;
+    position: relative;
+    margin-bottom: 20px;
+  }
+  
+  form .row input {
+    width: 100%;
+    height: 100%;
+    padding-left: 45px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 16px;
+    outline: none;
+  }
+  
+  form .row i {
+    position: absolute;
+    top: 50%;
+    left: 10px;
+    transform: translateY(-50%);
+    font-size: 18px;
+    color: #888;
+  }
+  
+  form .pass a,
+  form .signup-link a {
+    color: #16a085;
+    text-decoration: none;
+    font-size: 14px;
+  }
+  
+  form .pass a:hover,
+  form .signup-link a:hover {
+    text-decoration: underline;
+  }
+  
+  form .button input {
+    width: 100%;
+    padding: 12px;
+    background: #16a085;
+    border: none;
+    border-radius: 5px;
+    color: #fff;
+    font-size: 18px;
+    cursor: pointer;
+  }
+  
+  form .button input:hover {
+    background: #12876f;
+  }
+  
+  /* Right side green rectangle for sign-up prompt */
+  .signup-prompt {
+    width:25%;
+    background: #16a085;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    border-radius: 0 5px 5px 0;
+    padding: 20px 15px; /* Adds space on left and right edges */
+  }
+  
+  .signup-prompt h2 {
+    font-size: 24px;
+    margin-bottom: 10px;
+    
+  }
+
+  .signup-prompt h4 {
+    font-size: 18px; /* Adjust font size if needed */
+    margin-top: 5px; /* Add space above the h4 */
+    margin-bottom: 15px; /* Reduces spacing below h4 */
+    padding: 0 10px; /* Optional: adds space within h4 for a balanced look */
+
+    
+}
+  
+  .signup-prompt a {
+    color: #fff;
+    font-weight: bold;
+    text-decoration: underline;
+  }
+
+  /* Ensure error messages display in red and below inputs */
+.form-group {
+    position: relative;
+    margin-bottom: 20px; /* Space between input fields */
+}
+  
+  .error-message.hidden{
+    color: red; /* Explicit red color for errors */
+    font-size: 0.9em;
+    margin-top: 5px; /* Space between input and error message */
+    margin-left: 50px;
+    display: block;
+    
+  }
+
+  .error-message.session-error {
+    margin-top: 10px;
+    margin-left: 32px; /* Matches alignment of form fields */
+}
+
+/* Optional: Adjust positioning of small error messages if needed */
+.error-message.hidden {
+    display: none; /* Hide JS error messages until they’re triggered */
+}
