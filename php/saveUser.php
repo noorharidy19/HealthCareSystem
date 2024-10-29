@@ -27,14 +27,23 @@ $newUser->address = $address;
 $newUser->userType = 'patient'; // Assign default userType or change as needed
 $newUser->DOb = $dob;
 
-
+if ($newUser->checkIfEmailExists($email)) {
+    $_SESSION['error'] = "Email already exists. Please use a different email.";
+    header("Location: signup.php");
+    exit();
+}
 
 // Call the method to create the user
 if ($newUser->createUser()) {
-    echo "User registered successfully! Your ID is: " . $newUser->ID; // Optional: show the ID
+    $_SESSION['user_id'] = $newUser->ID; // Store user ID in session after successful registration
+    header("Location: profile.php");
+    exit();
 } else {
-    echo "Error: User registration failed.";
+    $_SESSION['error'] = "Sign-up failed. Please try again.";
+    header("Location: signup.php");
+    exit();
 }
+
 
 // Close the database connection
 $conn->close();

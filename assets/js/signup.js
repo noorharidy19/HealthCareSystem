@@ -106,6 +106,8 @@ if (!address) {
             hasError = true;
         }
     }
+
+    
         
   // If there are no errors, return true to allow form submission
   return !hasError;
