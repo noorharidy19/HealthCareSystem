@@ -77,7 +77,7 @@
       <div class="card text-center">
         <div class="card-body">
           <h5 class="card-title">Reports Generated</h5>
-          <p class="card-text"><i class="fas fa-file-alt fa-3x"></i></p>
+          <p class="card-text"><a href="reports.php"><i class="fas fa-file-alt fa-3x"></a></i></p>
         </div>
       </div>
     </div>
