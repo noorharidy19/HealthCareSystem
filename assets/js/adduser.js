@@ -80,7 +80,7 @@ function closeModal() {
 
     // Phone Validation
     let phone = document.getElementById('phone').value.trim();
-    let phonePattern = /^[0-9]{10}$/;  // Adjust regex based on your format
+    let phonePattern = /^[0-9]{11}$/;  // Adjust regex based on your format
     if (!phonePattern.test(phone)) {
       document.getElementById('phoneError').innerText = 'Please enter a valid 10-digit phone number.';
       isValid = false;

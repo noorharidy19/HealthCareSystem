@@ -96,7 +96,6 @@
           <th>#</th>
           <th>Name</th>
           <th>Email</th>
-          <th>Password</th>
           <th>Gender</th>
           <th>Address</th>
           <th>UserType</th>
@@ -117,7 +116,6 @@
             echo "<td>" . $counter++ . "</td>";
             echo "<td>" . $row['Name'] . "</td>";
             echo "<td>" . $row['Email'] . "</td>";
-            echo "<td>" . $row['Password'] . "</td>";
             echo "<td>" . $row['gender'] . "</td>";
             echo "<td>" . $row['Address'] . "</td>";
             echo "<td>" . $row['UserType'] . "</td>";
