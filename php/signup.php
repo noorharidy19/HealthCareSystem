@@ -3,9 +3,9 @@
 session_start(); 
 include('DB.php'); 
 require('Classes.php');
-require('saveUser.php');
 
-$patientClass = new Classes($id);
+
+$patientClass = new User(NULL);
 global $conn;
 
 $error = "";

@@ -1,4 +1,3 @@
-
 <?php
 include 'DB.php';
 class User{
@@ -27,46 +26,50 @@ public $DOb;
 
       }
   }
-  public function checkIfEmailExists($email) {
-    global $conn;
-    $stmt = $conn->prepare("SELECT id FROM users WHERE email = ?");
-    $stmt->bind_param("s", $email);
-    $stmt->execute();
-    $stmt->store_result();
-    return $stmt->num_rows > 0; // Returns true if email exists
-}
-  public function createUser() {
-    global $conn;
 
-    $emailCheckQuery = "SELECT * FROM users WHERE email = ?";
-
-        $stmt = $conn->prepare($emailCheckQuery);
-        $stmt->bind_param("s", $this->email);
-        $stmt->execute();
-        $result = $stmt->get_result();
-
-        if ($result->num_rows > 0) {
-            // Email already exists
-            $_SESSION['error'] = "Email already exists. Please use a different email.";
-            return false;
-        }
-
-        // Insert new user if email does not exist
-        $insertQuery = "INSERT INTO users (name, email, password, phone, address, userType, DOb) 
-                        VALUES (?, ?, ?, ?, ?, ?, ?)";
-        $stmt = $conn->prepare($insertQuery);
-        $stmt->bind_param("sssssss", $this->name, $this->email, $this->password, $this->phone, $this->address, $this->userType, $this->DOb);
-
-        if ($stmt->execute()) {
-            // Get the last inserted ID
-            $this->ID = $this->conn->insert_id;
-            return true;
-        } else {
-            $_SESSION['error'] = "User registration failed.";
-            return false;
-        }
+  public function saveUser($name, $email, $password, $phone, $dob, $userType) {
+    // Hash the password
+    $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+    
+    // Prepare the SQL statement
+    $stmt = $GLOBALS['conn']->prepare("INSERT INTO users (name, email, password, phone, dob, userType) VALUES (?, ?, ?, ?, ?, ?)");
+    $stmt->bind_param("ssssss", $name, $email, $hashedPassword, $phone, $dob, $userType);
+    
+    if ($stmt->execute()) {
+        return $GLOBALS['conn']->insert_id; // Return the new user ID
+    } else {
+        return false; // Return false on failure
     }
+}
 
+  public function createUser() {
+    global $conn; // Ensure the connection is available
+ // Check if email already exists
+ $emailCheckQuery = "SELECT * FROM users WHERE email = ?";
+ $stmt = $conn->prepare($emailCheckQuery);
+ $stmt->bind_param("s", $this->email);
+ $stmt->execute();
+ $result = $stmt->get_result();
+
+ if ($result->num_rows > 0) {
+     // Email already exists
+     $_SESSION['error'] = "Email already exists. Please use a different email.";
+     return false;
+ }
+    // Prepare and bind the SQL statement
+    $stmt = $conn->prepare("INSERT INTO users (name, email, password, phone, address, userType, DOb) VALUES (?, ?, ?, ?, ?, ?, ?)");
+    $stmt->bind_param("sssssss", $this->name, $this->email, $this->password, $this->phone, $this->address, $this->userType, $this->DOb);
+
+    // Execute the statement and return result
+    if ($stmt->execute()) {
+        // Optionally, fetch the last inserted ID
+        $this->ID = $stmt->insert_id; // Get the ID of the newly created user
+        return true; // Successfully created user
+    } else {
+      error_log("Database Error: " . $stmt->error); // Log to a file
+      return false; // Failed to create user
+    }
+}
 // retrieve user information
 public function getUserInfo($userId) {
   $stmt = $this->db->prepare("SELECT name, email, phone, address FROM users WHERE id = ?");

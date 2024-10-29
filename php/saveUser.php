@@ -1,6 +1,8 @@
 <?php
-session_start();
-require 'DB.php'; 
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+include 'DB.php'; 
 require 'Classes.php'; 
 global $conn;
 
@@ -27,23 +29,18 @@ $newUser->address = $address;
 $newUser->userType = 'patient'; // Assign default userType or change as needed
 $newUser->DOb = $dob;
 
-if ($newUser->checkIfEmailExists($email)) {
-    $_SESSION['error'] = "Email already exists. Please use a different email.";
-    header("Location: signup.php");
-    exit();
-}
+
 
 // Call the method to create the user
 if ($newUser->createUser()) {
-    $_SESSION['user_id'] = $newUser->ID; // Store user ID in session after successful registration
+    $_SESSION['user_id'] = $newUser->ID;
     header("Location: profile.php");
     exit();
 } else {
-    $_SESSION['error'] = "Sign-up failed. Please try again.";
+    // Redirect to signup with an error message
     header("Location: signup.php");
     exit();
 }
-
 
 // Close the database connection
 $conn->close();
