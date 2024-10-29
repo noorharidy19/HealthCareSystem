@@ -81,9 +81,9 @@
           $user = $result->fetch_assoc();
 
           // Verify the password
-          if (password_verify($password, $user['password'])) { // Assuming passwords are hashed
+          if (password_verify($password, $user['Password'])) { // Assuming passwords are hashed
               $_SESSION['user_id'] = $user['id']; // Set session variables as needed
-              $_SESSION['email'] = $user['email']; // Adjust field as per your database
+              $_SESSION['Email'] = $user['Email']; // Adjust field as per your database
               header("Location: index.php"); // Redirect to a logged-in page
               exit();
           } else {
