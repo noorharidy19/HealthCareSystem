@@ -113,45 +113,56 @@
   </div>
 
 
-  <div class="bg-light">
-    <div class="page-section py-3 mt-md-n5 custom-index">
-      <div class="container">
-        <div class="row justify-content-center">
-          <div class="col-md-4 py-3 py-md-0">
-            <div class="card-service wow fadeInUp">
-              <div class="circle-shape bg-secondary text-white">
-                <span class="mai-chatbubbles-outline"></span>
-              </div>
-              <p><span>Chat</span> with a doctors</p>
-            </div>
+  <div class="page-section bg-light">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-3 py-3 wow zoomIn">
+        <div class="card-service">
+          <div class="circle-shape bg-secondary text-white">
+            <span class="mai-chatbubbles-outline"></span>
           </div>
-          <div class="col-md-4 py-3 py-md-0">
-            <div class="card-service wow fadeInUp">
-              <div class="circle-shape bg-primary text-white">
-                <span class="mai-shield-checkmark"></span>
-              </div>
-              <p><span>One</span>-Health Protection</p>
-            </div>
-          </div>
-          <div class="col-md-4 py-3 py-md-0">
-            <div class="card-service wow fadeInUp">
-              <div class="circle-shape bg-accent text-white">
-                <span class="mai-basket"></span>
-              </div>
-              <p><span>One</span>-Health Pharmacy</p>
-            </div>
-          </div>
+          <p><span>Chat</span> with a doctor</p>
         </div>
       </div>
-    </div> <!-- .page-section -->
+      <div class="col-md-3 py-3 wow zoomIn">
+        <div class="card-service">
+          <div class="circle-shape bg-primary text-white">
+            <span class="fa fa-calendar"></span>
+          </div>
+          <p><span>Book </span>an appointment</p>
+        </div>
+      </div>
+      <div class="col-md-3 py-3 wow zoomIn">
+        <div class="card-service">
+          <div class="circle-shape bg-accent text-white">
+            <span class="fa fa-bell"></span>
+          </div>
+          <p><span>Set </span>medication reminders</p>
+        </div>
+      </div>
+      <div class="col-md-3 py-3 wow zoomIn">
+        <div class="card-service">
+          <div class="circle-shape bg-accent text-white">
+            <span class="fa fa-chart-line"></span>
+          </div>
+          <p><span>Monitor </span>health metrics</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
     <div class="page-section pb-0">
       <div class="container">
         <div class="row align-items-center">
           <div class="col-lg-6 py-3 wow fadeInUp">
             <h1>Welcome to Your Health <br> Center</h1>
-            <p class="text-grey mb-4">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Accusantium aperiam earum ipsa eius, inventore nemo labore eaque porro consequatur ex aspernatur. Explicabo, excepturi accusantium! Placeat voluptates esse ut optio facilis!</p>
-            <a href="about.html" class="btn btn-primary">Learn More</a>
+            <p class="text-grey mb-4"> At One Health, we are dedicated to making healthcare easier for everyone. Our team believes that managing health should be simple and accessible, which is why we created our healthcare chatbot system.
+</p>
+
+<p class="text-grey mb-4">
+  We understand that keeping track of doctor appointments, medications, and understanding medical information can be challenging. Our chatbot is here to help! It allows patients to:</p>
+            <a href="about.php" class="btn btn-primary">Learn More</a>
           </div>
           <div class="col-lg-6 wow fadeInRight" data-wow-delay="400ms">
             <div class="img-place custom-img-1">

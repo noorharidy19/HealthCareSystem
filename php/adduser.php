@@ -18,8 +18,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $DOb = htmlspecialchars($_POST['dob']);
     $gender = htmlspecialchars($_POST['gender']);
 
+    $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+
     // Add the user
-    if (User::addUser($name, $email, $password, $phone, $address, $userType, $DOb, $gender)) {
+    if (User::addUser($name, $email,$hashedPassword, $phone, $address, $userType, $DOb, $gender)) {
         echo "User added successfully.";
         // Redirect to a success page or dashboard
         header("Location: admin.php");

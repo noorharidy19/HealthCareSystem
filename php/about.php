@@ -112,35 +112,43 @@
   </div> <!-- .page-banner -->
 
   <div class="page-section bg-light">
-    <div class="container">
-      <div class="row">
-        <div class="col-md-4 py-3 wow zoomIn">
-          <div class="card-service">
-            <div class="circle-shape bg-secondary text-white">
-              <span class="mai-chatbubbles-outline"></span>
-            </div>
-            <p><span>Chat</span> with a doctors</p>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-3 py-3 wow zoomIn">
+        <div class="card-service">
+          <div class="circle-shape bg-secondary text-white">
+            <span class="mai-chatbubbles-outline"></span>
           </div>
+          <p><span>Chat</span> with a doctor</p>
         </div>
-        <div class="col-md-4 py-3 wow zoomIn">
-          <div class="card-service">
-            <div class="circle-shape bg-primary text-white">
-              <span class="mai-shield-checkmark"></span>
-            </div>
-            <p><span>One</span>-Health Protection</p>
+      </div>
+      <div class="col-md-3 py-3 wow zoomIn">
+        <div class="card-service">
+          <div class="circle-shape bg-primary text-white">
+            <span class="fa fa-calendar"></span>
           </div>
+          <p><span>Book </span>an appointment</p>
         </div>
-        <div class="col-md-4 py-3 wow zoomIn">
-          <div class="card-service">
-            <div class="circle-shape bg-accent text-white">
-              <span class="mai-basket"></span>
-            </div>
-            <p><span>One</span>-Health Pharmacy</p>
+      </div>
+      <div class="col-md-3 py-3 wow zoomIn">
+        <div class="card-service">
+          <div class="circle-shape bg-accent text-white">
+            <span class="fa fa-bell"></span>
           </div>
+          <p><span>Set </span>medication reminders</p>
+        </div>
+      </div>
+      <div class="col-md-3 py-3 wow zoomIn">
+        <div class="card-service">
+          <div class="circle-shape bg-accent text-white">
+            <span class="fa fa-chart-line"></span>
+          </div>
+          <p><span>Monitor </span>health metrics</p>
         </div>
       </div>
     </div>
   </div>
+</div>
 
   <div class="page-section">
     <div class="container">
@@ -148,8 +156,26 @@
         <div class="col-lg-8 wow fadeInUp">
           <h1 class="text-center mb-3">Welcome to Your Health Center</h1>
           <div class="text-lg">
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nesciunt neque sit, explicabo vero nulla animi nemo quae cumque, eaque pariatur eum ut maxime! Tenetur aperiam maxime iure explicabo aut consequuntur. Lorem ipsum dolor sit amet consectetur adipisicing elit. Nesciunt neque sit, explicabo vero nulla animi nemo quae cumque, eaque pariatur eum ut maxime! Tenetur aperiam maxime iure explicabo aut consequuntur.</p>
-            <p>Expedita iusto sunt beatae esse id nihil voluptates magni, excepturi distinctio impedit illo, incidunt iure facilis atque, inventore reprehenderit quidem aliquid recusandae. Lorem ipsum dolor sit amet consectetur adipisicing elit. Laudantium quod ad sequi atque accusamus deleniti placeat dignissimos illum nulla voluptatibus vel optio, molestiae dolore velit iste maxime, nobis odio molestias!</p>
+          <p>
+  At One Health, we are dedicated to making healthcare easier for everyone. Our team believes that managing health should be simple and accessible, which is why we created our healthcare chatbot system.
+</p>
+
+<p>
+  We understand that keeping track of doctor appointments, medications, and understanding medical information can be challenging. Our chatbot is here to help! It allows patients to:
+  <ul>
+    <li>Easily schedule appointments</li>
+    <li>Set medication reminders</li>
+    <li>Monitor important health metrics</li>
+  </ul>
+</p>
+
+<p>
+  We also focus on educating patients by providing clear explanations of lab results and medications, making it easier to understand their health.
+</p>
+
+<p>
+  Our mission is to empower patients to take control of their health and improve their overall well-being. Join us in making healthcare more understandable and accessible for everyone!
+</p>
           </div>
         </div>
         <div class="col-lg-10 mt-5">
