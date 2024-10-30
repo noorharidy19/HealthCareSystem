@@ -3,7 +3,7 @@
 <head>
     <?php
     session_start();
-    require_once("Classes.php");
+    include_once("Classes.php");
     include("DB.php");
 
     // Check if the user is logged in
@@ -15,8 +15,20 @@
     // Get the user ID from the session
     $id = $_SESSION['user_id'];
 
-    // Create a User object to retrieve user information
-    $user = new User(NULL);
+    // Prepare SQL statement to retrieve user info
+    $query = "SELECT * FROM users WHERE id = ?";
+    $stmt = $conn->prepare($query);
+    $stmt->bind_param("i", $id); // Bind user ID to the statement
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    // Fetch user data
+    if ($result->num_rows > 0) {
+        $userData = $result->fetch_assoc(); // Fetch user data as an associative array
+    } else {
+        echo "No user found.";
+        exit(); // Exit if no user is found
+    }
 
     ?>
 
@@ -39,15 +51,15 @@
         <form id="profile-form">
             <div class="form-group">
                 <label for="name">Name</label>
-                <input type="text" id="name" class="form-control" name="name" value="<?php echo htmlspecialchars($user->email); ?>" readonly>
+                <input type="text" id="name" class="form-control" name="name" value="<?php echo htmlspecialchars($userData['Name']); ?>" readonly>
             </div>
             <div class="form-group">
                 <label for="email">Email</label>
-                <input type="email" id="email" class="form-control" name="email" value="<?php echo htmlspecialchars($user->email); ?>" readonly>
+                <input type="email" id="email" class="form-control" name="email" value="<?php echo htmlspecialchars($userData['Email']); ?>" readonly>
             </div>
             <div class="form-group">
                 <label for="address">Address</label>
-                <input type="text" id="address" class="form-control" name="address" value="<?php echo htmlspecialchars($user->address); ?>" readonly>
+                <input type="text" id="address" class="form-control" name="address" value="<?php echo htmlspecialchars($userData['Address']); ?>" readonly>
             </div>
             <button type="button" id="edit-btn" class="btn btn-primary mt-3" onclick="enableEditing()">Edit</button>
             <button type="submit" id="save-btn" class="btn btn-success mt-3" style="display:none;">Save</button>
