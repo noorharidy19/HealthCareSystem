@@ -80,20 +80,26 @@
       if ($result->num_rows > 0) {
           $user = $result->fetch_assoc();
 
-          // Verify the password
-          if (password_verify($password, $user['Password'])) { // Assuming passwords are hashed
-              $_SESSION['user_id'] = $user['id']; // Set session variables as needed
-              $_SESSION['Email'] = $user['Email']; // Adjust field as per your database
-              header("Location: index.php"); // Redirect to a logged-in page
-              exit();
-          } else {
-              $_SESSION['error'] = "Invalid email/phone or password.";
-              
-          }
-      } else {
-          $_SESSION['error'] = "User not found.";
-         
-      }
+         // Verify the password
+        if (password_verify($password, $user['Password'])) { // Assuming passwords are hashed
+            $_SESSION['user_id'] = $user['id'];
+            $_SESSION['Email'] = $user['Email'];
+            $_SESSION['UserType'] = $user['UserType']; // Store userType in session
+
+            // Check userType for redirection
+            if ($user['UserType'] === 'admin') {
+                header("Location: admin.php"); // Redirect to admin dashboard
+            } else {
+                header("Location: index.php"); // Redirect to user dashboard
+            }
+            exit();
+        } else {
+            $_SESSION['error'] = "Invalid email/phone or password.";
+        }
+    } else {
+        $_SESSION['error'] = "User not found.";
+    }
+
 
       $stmt->close();
       $conn->close();
