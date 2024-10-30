@@ -62,6 +62,7 @@
                 <input type="text" id="address" class="form-control" name="address" value="<?php echo htmlspecialchars($userData['Address']); ?>" readonly>
             </div>
             <button type="button" id="edit-btn" class="btn btn-primary mt-3" onclick="enableEditing()">Edit</button>
+            <button type="button" id="edit-btn" class="btn btn-primary mt-3" onclick="window.location.href='index.php'">Home</button>
             <button type="submit" id="save-btn" class="btn btn-success mt-3" style="display:none;">Save</button>
             <button type="button" id="cancel-btn" class="btn btn-secondary mt-3" style="display:none;" onclick="disableEditing()">Cancel</button>
         </form>
