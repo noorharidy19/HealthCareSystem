@@ -423,6 +423,7 @@
 <script src="../assets/vendor/wow/wow.min.js"></script>
 
 <script src="../assets/js/theme.js"></script>
+<script src="../assets/js/book.js"></script>
   
 </body>
 </html>
