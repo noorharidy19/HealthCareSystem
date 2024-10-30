@@ -14,19 +14,35 @@ public $DOb;
     $sql="select * from users where 	ID=$id";
     $result = mysqli_query($GLOBALS['conn'], $sql);
     if($row = mysqli_fetch_assoc($result)){
-        $this->ID = $row['ID'];
-        $this->name = $row['name'];        
-        $this->email = $row['email'];
-        $this->password = $row['password'];
-        $this->phone = $row['phone'];
-        $this->address = $row['address'];
-        $this->userType = $row['userType']; //admin , doctor, patient
-        $this->DOb = $row['DOb'];
+      $this->ID = $row['ID'] ?? null; // Use null coalescing to avoid warnings
+      $this->name = $row['name'] ?? null;
+      $this->email = $row['email'] ?? null;
+      $this->password = $row['password'] ?? null;
+      $this->phone = $row['phone'] ?? null;
+      $this->address = $row['address'] ?? null;
+      $this->userType = $row['userType'] ?? null;
+      $this->DOb = $row['DOb'] ?? null;
+        
     }
 
       }
   }
 
+  //save data to show user info on profile
+  private function loadUserData() {
+    global $conn;
+    $stmt = $conn->prepare("SELECT name, email, address FROM users WHERE id = ?");
+    $stmt->bind_param("i", $this->id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    if ($result->num_rows > 0) {
+        $userData = $result->fetch_assoc();
+        $this->name = $userData['name'];
+        $this->email = $userData['email'];
+        $this->address = $userData['address'];
+    }
+}
   public function saveUser($name, $email, $password, $phone, $dob, $userType) {
     // Hash the password
     $hashedPassword = password_hash($password, PASSWORD_DEFAULT);

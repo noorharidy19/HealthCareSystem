@@ -2,7 +2,7 @@
 $servername = "localhost";
 $username = "root"; // Replace with your database username
 $password = ""; // Replace with your database password
-$dbname = "healthsystem"; // Replace with your database name
+$dbname = "health"; // Replace with your database name
 
 // Create connection
 $GLOBALS['conn'] = new mysqli($servername, $username, $password, $dbname);
