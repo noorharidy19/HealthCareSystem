@@ -15,13 +15,13 @@ public $DOb;
     $result = mysqli_query($GLOBALS['conn'], $sql);
     if($row = mysqli_fetch_assoc($result)){
       $this->ID = $row['ID'] ?? null; // Use null coalescing to avoid warnings
-      $this->name = $row['name'] ?? null;
-      $this->email = $row['email'] ?? null;
-      $this->password = $row['password'] ?? null;
+      $this->name = $row['Name'] ?? null;
+      $this->email = $row['Email'] ?? null;
+      $this->password = $row['Password'] ?? null;
       $this->phone = $row['phone'] ?? null;
-      $this->address = $row['address'] ?? null;
-      $this->userType = $row['userType'] ?? null;
-      $this->DOb = $row['DOb'] ?? null;
+      $this->address = $row['Address'] ?? null;
+      $this->userType = $row['UserType'] ?? null;
+      $this->DOb = $row['DOB'] ?? null;
         
     }
 

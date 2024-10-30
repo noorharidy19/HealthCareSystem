@@ -73,16 +73,6 @@
         <small class="error-message" id="addressError"></small>
       </div>
 
-      <!-- Gender -->
-      <div class="form-group">
-        <label for="gender">Gender</label>
-        <select name="gender" id="gender" class="form-control">
-          <option value="male" <?php echo ($user->gender == 'male') ? 'selected' : ''; ?>>Male</option>
-          <option value="female" <?php echo ($user->gender == 'female') ? 'selected' : ''; ?>>Female</option>
-          <option value="other" <?php echo ($user->gender == 'other') ? 'selected' : ''; ?>>Other</option>
-        </select>
-        <small class="error-message" id="genderError"></small>
-      </div>
 
       <!-- Submit Button -->
       <div class="btn-container">
@@ -108,7 +98,7 @@ include_once 'Classes.php';
     $gender = $_POST['gender'];
 
     if (User::editUser($name, $email, $password, $phone, $address, $dob, $gender, $ID)) {
-        header("Location: index.php");
+        header("Location: admin.php");
     } else {
         echo "<p>Error updating user.</p>";
     }

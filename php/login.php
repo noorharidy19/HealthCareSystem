@@ -87,7 +87,7 @@
             $_SESSION['UserType'] = $user['UserType']; // Store userType in session
 
             // Check userType for redirection
-            if ($user['UserType'] === 'admin') {
+            if ($user['UserType'] === 'Admin') {
                 header("Location: admin.php"); // Redirect to admin dashboard
             } else {
                 header("Location: index.php"); // Redirect to user dashboard

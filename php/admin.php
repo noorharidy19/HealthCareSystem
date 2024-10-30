@@ -121,7 +121,7 @@
             echo "<td>" . $row['UserType'] . "</td>";
             echo "<td>" . $row['DOB'] . "</td>";
             echo "<td>
-                    <a href='edituser.php?id=" . $row['ID'] . "' class='btn btn-sm btn-primary'>Edit</a>
+                    <a href='edituser.php?id=" . htmlspecialchars($row['ID']) . "' class='btn btn-sm btn-primary'>Edit</a>
             <button class='btn btn-sm btn-danger' onclick='confirmDelete(" . $row['ID'] . ")'>Delete</button>
                   </td>";
             echo "</tr>";
