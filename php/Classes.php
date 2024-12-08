@@ -43,19 +43,19 @@ public $DOb;
         $this->address = $userData['address'];
     }
 }
-  public function saveUser($name, $email, $password, $phone, $dob, $userType) {
-    // Hash the password
-    $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
-    
-    // Prepare the SQL statement
-    $stmt = $GLOBALS['conn']->prepare("INSERT INTO users (name, email, password, phone, dob, userType) VALUES (?, ?, ?, ?, ?, ?)");
-    $stmt->bind_param("ssssss", $name, $email, $hashedPassword, $phone, $dob, $userType);
-    
-    if ($stmt->execute()) {
-        return $GLOBALS['conn']->insert_id; // Return the new user ID
-    } else {
-        return false; // Return false on failure
-    }
+public function saveUser($name, $email, $password, $phone, $dob, $userType) {
+  // Hash the password
+  $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+  
+  // Prepare the SQL statement
+  $stmt = $GLOBALS['conn']->prepare("INSERT INTO users (name, email, password, phone, dob, userType) VALUES (?, ?, ?, ?, ?, ?)");
+  $stmt->bind_param("ssssss", $name, $email, $hashedPassword, $phone, $dob, $userType);
+  
+  if ($stmt->execute()) {
+      return $GLOBALS['conn']->insert_id; // Return the new user ID
+  } else {
+      return false; // Return false on failure
+  }
 }
 
   public function createUser() {
@@ -99,22 +99,7 @@ public function getUserAppointments($userId) {
   $stmt->execute([$userId]);
   return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
-public static function addUser($name, $email, $password, $phone, $address, $userType, $DOb, $gender) {
-        
 
-  // Prepare the SQL statement
-  $sql = "INSERT INTO users (Name, phone, Email, Password, gender, Address, UserType, DOB) 
-          VALUES ('$name', '$phone', '$email', '$password', '$gender', '$address', '$userType', '$DOb')";
-
-  // Execute the query
-  if (mysqli_query($GLOBALS['conn'], $sql)) {
-      return true; // User added successfully
-  } else {
-      // Debugging: Print error message
-      error_log("Failed to execute query: " . mysqli_error($GLOBALS['conn']));
-      return false; // Failed to add user
-  }
-}
 public static function editUser($name, $email, $password, $phone, $address, $DOB, $gender, $ID) {
   // Ensure the connection is available
   global $conn;
@@ -140,7 +125,57 @@ public static function editUser($name, $email, $password, $phone, $address, $DOB
   }
 }
 }
+Class Admin extends User{
+  public function __construct($id) {
+    parent::__construct($id);
+  }
+  public static function addUser($name, $email, $password, $phone, $address, $userType, $DOb, $gender) {
+        
 
+    // Prepare the SQL statement
+    $sql = "INSERT INTO users (Name, phone, Email, Password, gender, Address, UserType, DOB) 
+            VALUES ('$name', '$phone', '$email', '$password', '$gender', '$address', '$userType', '$DOb')";
+  
+    // Execute the query
+    if (mysqli_query($GLOBALS['conn'], $sql)) {
+        return true; // User added successfully
+    } else {
+        // Debugging: Print error message
+        error_log("Failed to execute query: " . mysqli_error($GLOBALS['conn']));
+        return false; // Failed to add user
+    }
+  }
+  
+  // public static function deleteUser($id, $conn) {
+  //     // Prepare the SQL statement
+  //     $stmt = $conn->prepare("DELETE FROM users WHERE ID = ?");
+  //     $stmt->bind_param("i", $id);
+  
+  //     // Execute the query
+  //     if ($stmt->execute()) {
+  //         return true; // User deleted successfully
+  //     } else {
+  //         // Debugging: Print error message
+  //         error_log("Failed to execute query: " . $stmt->error);
+  //         return false; // Failed to delete user
+  //     }
+  // }
+Class Doctor extends User{
+  public function __construct($id) {
+    parent::__construct($id);
+  }
+/
+}
+Class Patient extends User{
+  public function __construct($id) {
+    parent::__construct($id);
+  }
+}
+Class Appointments{
 
+}
+Class MedicalRecords{
+  
+}
 
 ?>
