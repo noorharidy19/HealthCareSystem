@@ -65,7 +65,7 @@
       <?php
       include 'DB.php'; // Include your database connection
       include 'Classes.php';
-      $sql = "SELECT * FROM users WHERE userType = 'doctors'";
+      $sql = "SELECT * FROM users WHERE userType = 'doctor'";
       $result = mysqli_query($GLOBALS['conn'], $sql);
       if (mysqli_num_rows($result) > 0) {
           while ($row = mysqli_fetch_assoc($result)) {
