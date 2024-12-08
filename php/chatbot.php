@@ -11,9 +11,6 @@
     <link rel="stylesheet" href="../assets/vendor/animate/animate.css">
     <link rel="stylesheet" href="../assets/css/theme.css">
     <link rel="stylesheet" href="../assets/css/chatbot.css">
-    
-   
-        
 </head>
 <body>
     <header>
@@ -100,27 +97,60 @@
             <button onclick="sendMessage()">Send</button>
         </div>
     </div>
-
     <script>
-        function sendMessage() {
-            const userInput = document.getElementById('user-input');
-            const chatHistory = document.getElementById('chat-history');
+    // Function to send message to chatbot
+    function sendMessage() {
+    const userInput = document.getElementById('user-input');
+    const chatHistory = document.getElementById('chat-history');
 
-            if (userInput.value.trim() !== "") {
-                const userMessage = document.createElement('div');
-                userMessage.className = 'message user';
-                userMessage.textContent = userInput.value;
-                chatHistory.appendChild(userMessage);
+    if (userInput.value.trim() !== "") {
+        // Display user message
+        const userMessage = document.createElement('div');
+        userMessage.className = 'message user';
+        userMessage.textContent = userInput.value;
+        chatHistory.appendChild(userMessage);
 
-                const botMessage = document.createElement('div');
-                botMessage.className = 'message bot';
-                botMessage.textContent = "This is a bot response.";
-                chatHistory.appendChild(botMessage);
+        // Capture user input
+        const prompt = userInput.value;
 
-                userInput.value = "";
-                chatHistory.scrollTop = chatHistory.scrollHeight;
+        // Clear input field
+        userInput.value = "";
+
+        // Send the prompt to the backend
+        fetch("http://127.0.0.1:5000/generate", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ prompt: prompt })
+        })
+        .then(response => response.json())
+        .then(data => {
+            const botMessage = document.createElement('div');
+            botMessage.className = 'message bot';
+            if (data.response) {
+                botMessage.textContent = data.response; // AI response
+            } else {
+                botMessage.textContent = "Sorry, there was an error.";
             }
-        }
-    </script>
+            chatHistory.appendChild(botMessage);
+
+            // Scroll to the bottom
+            chatHistory.scrollTop = chatHistory.scrollHeight;
+        })
+        .catch(error => {
+            console.error("Error:", error);
+            const errorMessage = document.createElement('div');
+            errorMessage.className = 'message bot';
+            errorMessage.textContent = "There was an error connecting to the server.";
+            chatHistory.appendChild(errorMessage);
+        });
+    }
+}
+
+
+    document.querySelector('button').addEventListener('click', sendMessage);
+</script>
+
 </body>
 </html>
