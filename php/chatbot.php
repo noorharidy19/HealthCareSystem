@@ -13,6 +13,27 @@
     <link rel="stylesheet" href="../assets/css/chatbot.css">
 </head>
 <body>
+<style>
+        /* Add your CSS styles here */
+        #image-button {
+            cursor: pointer;
+            display: inline-block;
+            width: 24px; /* Adjust the size as needed */
+            height: 24px; /* Adjust the size as needed */
+        }
+        #image-input {
+            display: none;
+        }
+        .message {
+            margin: 5px 0;
+        }
+        .message.user {
+            text-align: right;
+        }
+        .message.bot {
+            text-align: left;
+        }
+    </style>
     <header>
         <div class="topbar">
             <div class="container">
@@ -92,14 +113,21 @@
         <div class="chat-history" id="chat-history">
             <div class="message bot">Healthcare Chatbot: How can I help you?</div>
         </div>
-        <div class="chat-message">
-            <input type="text" id="user-input" placeholder="Type a message...">
-            <button onclick="sendMessage()">Send</button>
-        </div>
+        <<div class="chat-message">
+    <input type="text" id="user-input" placeholder="Type a message...">
+    <button onclick="sendMessage()">Send</button>
+    <label id="image-button" for="image-input">
+        <img src="../assets/images/upload-icon.png" style="width: 24px; height: 24px;" alt="Upload">
+    </label>
+    <input type="file" id="image-input" accept="image/*">
+</div>
+
+       
     </div>
+
+
     <script>
-    // Function to send message to chatbot
-    function sendMessage() {
+   function sendMessage() {
     const userInput = document.getElementById('user-input');
     const chatHistory = document.getElementById('chat-history');
 
@@ -148,9 +176,67 @@
     }
 }
 
+function sendImage(imageFile) {
+    const chatHistory = document.getElementById('chat-history');
 
-    document.querySelector('button').addEventListener('click', sendMessage);
+    // Display user's image in the chat
+    const userMessage = document.createElement('div');
+    userMessage.className = 'message user';
+    const img = document.createElement('img');
+    img.src = URL.createObjectURL(imageFile); // Show the selected image
+    img.style.maxWidth = '200px';
+    img.style.borderRadius = '10px'; // Styling
+    userMessage.appendChild(img);
+    chatHistory.appendChild(userMessage);
+
+    // Scroll to the bottom
+    chatHistory.scrollTop = chatHistory.scrollHeight;
+
+    // Prepare image for upload
+    const formData = new FormData();
+    formData.append('image', imageFile);
+
+    // Send the image to the backend for processing
+    fetch("http://127.0.0.1:5000/upload", {
+        method: "POST",
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        // Display bot's response in the chat
+        const botMessage = document.createElement('div');
+        botMessage.className = 'message bot';
+        botMessage.textContent = data.response || "Sorry, there was an error processing the image.";
+        chatHistory.appendChild(botMessage);
+
+        // Scroll to the bottom
+        chatHistory.scrollTop = chatHistory.scrollHeight;
+    })
+    .catch(error => {
+        console.error("Error:", error);
+        const errorMessage = document.createElement('div');
+        errorMessage.className = 'message bot';
+        errorMessage.textContent = "There was an error connecting to the server.";
+        chatHistory.appendChild(errorMessage);
+    });
+}
+
+// Event listener for image input
+document.getElementById('image-input').addEventListener('change', function(event) {
+    const imageFile = event.target.files[0];
+    if (imageFile) {
+        sendImage(imageFile);
+    }
+});
+
+// Add event listener for the Enter key
+document.getElementById('user-input').addEventListener('keydown', function(event) {
+    if (event.key === 'Enter') {
+        event.preventDefault(); // Prevent default action (like form submission)
+        sendMessage();
+    }
+});
+
 </script>
-
 </body>
 </html>

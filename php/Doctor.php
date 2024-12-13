@@ -1,3 +1,9 @@
+<?php
+session_start(); // Start the session
+
+// Check if the user is logged in and is a doctor
+$isLoggedIn = isset($_SESSION['user_id']) && $_SESSION['UserType'] === 'doctor';
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -75,9 +81,15 @@
               <li class="nav-item">
                   <a class="nav-link" href="contact.php">Contact</a>
               </li>
-              <li class="nav-item">
-                  <a class="btn btn-primary ml-lg-3" href="signup.php">Login / Register</a>
-              </li>
+              <?php if ($isLoggedIn): ?>
+                  <li class="nav-item">
+                      <a class="btn btn-primary ml-lg-3" href="logout.php">Logout</a>
+                  </li>
+              <?php else: ?>
+                  <li class="nav-item">
+                      <a class="btn btn-primary ml-lg-3" href="signup.php">Login / Register</a>
+                  </li>
+              <?php endif; ?>
               <li class="nav-item">
                   <a class="nav-link" href="chatbot.php" id="chatbot-icon" title="chatbot">
                       <i class="fas fa-robot"></i>
@@ -91,6 +103,8 @@
       </div> <!-- .container -->
     </nav>
   </header>
+</body>
+</html>
 
   <div class="page-hero bg-image overlay-dark" style="background-image: url(../assets/img/bg_image_1.jpg);">
     <div class="hero-section">
@@ -132,30 +146,10 @@
       </div>
     </div>
   </div>
-  <?php
-// Include database connection and Doctor class
-include 'DB.php';
-include 'Classes.php';
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $day = $_POST['Day'];
-    $startTime = $_POST['start'];
-    $endTime = $_POST['end'];
- // Replace with the actual doctor ID
-
-    // Instantiate the Doctor class
-    $doctor = new Doctor($day);
-
-    // Call the addSlot method
-    if ($doctor->addSlot($day, $startTime, $endTime)) {
-        echo "Slot added successfully.";
-    } else {
-        echo "Error adding slot.";
-    }
-}
-?>
   <!-- The Modal -->
-  <div class="modal fade" id="addSlotModal" tabindex="-1" role="dialog" aria-labelledby="addSlotModalLabel" aria-hidden="true">
+  <!-- The Modal -->
+<div class="modal fade" id="addSlotModal" tabindex="-1" role="dialog" aria-labelledby="addSlotModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -165,7 +159,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 </button>
             </div>
             <div class="modal-body">
-                <form action="" method="post">
+                <form action="add_slots.php" method="post">
                     <div class="form-group">
                         <label for="day">Day</label>
                         <input type="date" class="form-control" id="day" name="day" required>
@@ -184,7 +178,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         </div>
     </div>
 </div>
-
   <footer class="page-footer">
     <div class="container">
       <div class="row px-md-3">

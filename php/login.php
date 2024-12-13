@@ -89,7 +89,10 @@
             // Check userType for redirection
             if ($user['UserType'] === 'Admin') {
                 header("Location: admin.php"); // Redirect to admin dashboard
-            } else {
+            } else if ($user['UserType'] === 'Doctor') {
+                header("Location: Doctor.php"); // Redirect to user dashboard
+            }
+            else {
                 header("Location: index.php"); // Redirect to user dashboard
             }
             exit();
