@@ -1,13 +1,3 @@
-
-
-
-# Configure the Generative AI
-
-
-
-# Configure the Generative AI
-# Replace with your actual API key
-  # Replace with your actual API key
 from flask import Flask, request, jsonify, render_template
 from flask_cors import CORS
 from flask_socketio import SocketIO, join_room, leave_room, send
@@ -16,9 +6,15 @@ from PIL import Image
 import io
 import pytesseract
 import secrets
+from dotenv import load_dotenv
+import os
+
+# Load environment variables from .env file
+load_dotenv()
 
 # Configure the Generative AI
-genai.configure(api_key="AIzaSyCYWZ7RJbefP7KWE1pVwy5H_EYfVPTIGdM")  # Replace with your actual API key
+api_key = os.getenv("GENERATIVE_AI_API_KEY")
+genai.configure(api_key=api_key)
 model = genai.GenerativeModel("gemini-1.5-flash")
 
 app = Flask(__name__)
@@ -203,7 +199,24 @@ def on_leave(data):
 @socketio.on('message')
 def handle_message(data):
     room = data['room']
-    send(data['message'], to=room)
+    username = data['username']
+    message = data['message']
+    send(f'{username}: {message}', to=room)
 
 if __name__ == "__main__":
     socketio.run(app, debug=True)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
