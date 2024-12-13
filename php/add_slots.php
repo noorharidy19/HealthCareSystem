@@ -18,10 +18,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         if (Doctor::addSlot($doctorId, $day, $startTime, $endTime)) {
             echo "Slot added successfully.";
         } else {
-            echo "Error adding slot.";
+            // Check if there was an error message in the session
+            if (isset($_SESSION['error'])) {
+                echo "<div class='error-message'>" . htmlspecialchars($_SESSION['error']) . "</div>";
+                unset($_SESSION['error']); // Clear the error after displaying it
+            } else {
+                echo "<div class='error-message'>An error occurred while adding the slot. Please try again.</div>";
+            }
         }
     } else {
-        echo "Error: Unauthorized access.";
+        echo "<div class='error-message'>Error: Unauthorized access. Only doctors can add slots.</div>";
     }
 }
 ?>
