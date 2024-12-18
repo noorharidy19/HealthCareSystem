@@ -181,15 +181,22 @@ Class Admin extends User{
   
       public static function addSlot($doctorId, $day, $startTime, $endTime) {
           // Ensure user is a doctor
-          $stmt = $GLOBALS['conn']->prepare("SELECT UserType FROM users WHERE id = ?");
+          $stmt = $GLOBALS['conn']->prepare("SELECT UserType FROM users WHERE ID = ?");
           $stmt->bind_param("i", $doctorId);
           $stmt->execute();
           $result = $stmt->get_result();
           $user = $result->fetch_assoc();
   
-          if ($user['UserType'] !== 'doctor') {
+          if ($user['UserType'] !== 'Doctor') {
               return false;
           }
+          $currentDate = date("Y-m-d"); // Get today's date in YYYY-MM-DD format
+          if ($day < $currentDate) {
+              // Set a session error message for a past date
+              $_SESSION['error'] = "You cannot add a slot for a past day. Please choose a future date.";
+              return false; // Return false to indicate the error
+          }
+      
   
           // Prepare the SQL statement
           $sql = "INSERT INTO doctor (doctor_id, day, start_time, end_time) 

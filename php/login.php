@@ -71,7 +71,7 @@
       $password = $_POST['loginPassword'];
 
       // Prepare a SQL statement to prevent SQL injection
-      $stmt = $conn->prepare("SELECT * FROM users WHERE (email = ? OR phone = ?) LIMIT 1");
+      $stmt = $conn->prepare("SELECT * FROM users WHERE (Email = ? OR phone = ?) LIMIT 1");
       $stmt->bind_param("ss", $emailOrPhone, $emailOrPhone);
       $stmt->execute();
       $result = $stmt->get_result();
@@ -82,7 +82,7 @@
 
          // Verify the password
         if (password_verify($password, $user['Password'])) { // Assuming passwords are hashed
-            $_SESSION['user_id'] = $user['id'];
+            $_SESSION['user_id'] = $user['Id'];
             $_SESSION['Email'] = $user['Email'];
             $_SESSION['UserType'] = $user['UserType']; // Store userType in session
 

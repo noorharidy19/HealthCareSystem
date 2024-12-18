@@ -97,13 +97,17 @@ $(document).ready(function() {
         event.preventDefault();
         
         $.ajax({
-            url: 'update_profile.php', // Server script to process update
+            url: 'updateProfile.php', // Server script to process update
             type: 'POST',
             data: $(this).serialize(),
             success: function(response) {
-                alert(response);
-                disableEditing();
-            },
+    if (response.includes("successfully")) {
+        alert(response); // Notify the user
+        disableEditing(); // Switch back to read-only mode
+    } else {
+        alert(response); // Show the error message from PHP
+    }
+},
             error: function() {
                 alert("An error occurred while updating profile.");
             }
