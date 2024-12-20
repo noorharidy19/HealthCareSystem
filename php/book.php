@@ -12,6 +12,55 @@
   <link rel="stylesheet" href="../assets/vendor/animate/animate.css">
   <link rel="stylesheet" href="../assets/css/theme.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"> <!-- Font Awesome CSS -->
+
+  <?php
+require_once 'DB.php'; // Include your database connection
+require_once 'Classes.php';
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+  $doctor_id = $_POST['doctor_id'] ?? null;
+    $appointmentDate = $_POST['appointmentDate'];
+    $timeSlot = $_POST['timeSlot'];
+    $startTime=$_POST['start_time'];
+    $endTime=$_POST['end_time'];
+    $specialization = $_POST['specialization'];
+
+    // Parse time slot into start and end times
+    list($startTime, $endTime) = explode(' - ', $timeSlot);
+
+    // Prepare SQL query to check doctor availability
+    $sql = "
+        SELECT 
+            d.doctor_id, 
+            CONCAT('Dr. ', u.Name) AS doctor_name, 
+            d.start_time, 
+            d.end_time 
+        FROM doctor d
+        JOIN users u ON d.doctor_id = u.id 
+        JOIN specialization s ON d.field_id = s.ID
+        LEFT JOIN appointments a 
+            ON d.doctor_id = a.doctor_id 
+            AND a.appointmentDate = ? 
+            AND (? < a.end_time AND ? >= a.start_time)
+        WHERE s.fieldName = ?
+            AND d.day = ? 
+            AND (? BETWEEN d.start_time AND d.end_time)
+            AND a.doctor_id IS NULL
+        ORDER BY d.start_time ASC;
+    ";
+
+}
+
+  
+  
+?>
+
+
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Make Appointment</title>
+
+   
 </head>
 <body>
 
@@ -95,7 +144,7 @@
     <div class="container">
       <h1 class="text-center wow fadeInUp">Make an Appointment</h1>
 
-      <form class="main-form" onsubmit="return validateForm()">
+      <form class="main-form" id="appointmentForm" onsubmit="return validateForm()" method="POST" action="">
         <div class="row mt-5 ">
           <div class="col-12 col-sm-6 py-2 wow fadeInLeft">
             <input type="text" id="fullName" class="form-control" placeholder="Full name">
@@ -106,8 +155,10 @@
           <div class="col-12 col-sm-6 py-2 wow fadeInLeft" data-wow-delay="300ms">
             <input type="date" id="appointmentDate" class="form-control">
           </div>
-          <div class="col-12 col-sm-6 py-2 wow fadeInRight" data-wow-delay="300ms">
-            <select name="departement" id="departement" class="custom-select">
+
+          <!-- Department -->
+          <div class="col-12 col-sm-6 py-2">
+            <select name="departement" id="departement" class="custom-select" required>
               <option value="general">General Health</option>
               <option value="cardiology">Cardiology</option>
               <option value="dental">Dental</option>
@@ -115,18 +166,84 @@
               <option value="orthopaedics">Orthopaedics</option>
             </select>
           </div>
-          <div class="col-12 py-2 wow fadeInUp" data-wow-delay="300ms">
-            <input type="text" id="phoneNumber" class="form-control" placeholder="Number..">
+
+          <!-- Phone Number -->
+          <div class="col-12 py-2">
+            <input type="text" id="phoneNumber" name="phoneNumber" class="form-control" placeholder="Phone Number" required>
           </div>
-          <div class="col-12 py-2 wow fadeInUp" data-wow-delay="300ms">
-            <textarea name="message" id="message" class="form-control" rows="6" placeholder="Enter message.."></textarea>
+
+          <!-- Message -->
+          <div class="col-12 py-2">
+            <textarea name="message" id="message" class="form-control" rows="6" placeholder="Enter message..."></textarea>
           </div>
-        </div>
+
+          <!-- Doctor Dropdown (Dynamically populated) -->
+<div class="col-12 col-sm-6 py-2">
+    <select name="doctor_id" id="doctor_id" class="custom-select" required>
+        <option value="">Select a Doctor</option>
+        <?php
+        // Fetch doctors from the database
+        $doctors = Doctor::getDoctors();
+        if (!empty($doctors)) {
+            foreach ($doctors as $doctor) {
+                echo "<option value='{$doctor->doctor_id}'>{$doctor->doctor_name}</option>";
+            }
+        } else {
+            echo "<option value=''>No doctors available</option>";
+        }
+        ?>
+    </select>
+</div>
+
+<!-- Slots Dropdown (Initially empty) -->
+<div class="col-12 col-sm-6 py-2">
+    <select name="slot_id" id="slot_id" class="custom-select" required>
+        <option value="">Select a Slot</option>
+    </select>
+</div>
+
 
         <button type="submit" class="btn btn-primary mt-3 wow zoomIn">Submit Request</button>
       </form>
     </div>
   </div>
+  
+  <script>
+document.getElementById('doctor_id').addEventListener('change', function() {
+    var doctorId = this.value; // Get selected doctor_id
+
+    if (doctorId) {
+        // Make AJAX request to fetch slots for the selected doctor
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', 'getSlots.php?doctor_id=' + doctorId, true);
+        xhr.onload = function() {
+            if (xhr.status === 200) {
+                var slots = JSON.parse(xhr.responseText); // Parse the returned JSON
+                var slotSelect = document.getElementById('slot_id');
+                
+                // Clear the current slots
+                slotSelect.innerHTML = '<option value="">Select a Slot</option>';
+                
+                // Add new slots to the dropdown
+                if (slots.length > 0) {
+                    slots.forEach(function(slot) {
+                        var option = document.createElement('option');
+                        option.value = slot.slot_id;
+                        option.textContent = slot.slot_time;
+                        slotSelect.appendChild(option);
+                    });
+                } else {
+                    slotSelect.innerHTML += '<option value="">No slots available</option>';
+                }
+            }
+        };
+        xhr.send();
+    } else {
+        // If no doctor is selected, clear the slot dropdown
+        document.getElementById('slot_id').innerHTML = '<option value="">Select a Slot</option>';
+    }
+});
+</script>
 
   <script src="../assets/js/book.js"></script>
 

@@ -52,3 +52,34 @@ function showError(inputId, message) {
   errorElement.innerText = message;
   inputElement.parentNode.appendChild(errorElement);
 }
+ // book.js
+document.getElementById('appointmentForm').addEventListener('submit', async (event) => {
+  event.preventDefault();  // Prevent default form submission
+  
+  const formData = new FormData(event.target);
+
+  // Debugging: Log form data to ensure it's captured correctly
+  for (let [key, value] of formData.entries()) {
+      console.log(key + ": " + value);
+  }
+
+  try {
+      const response = await fetch('book.php', {
+          method: 'POST',  // Send data as a POST request
+          body: formData    // Send form data
+      });
+      
+      // Process the response from the server (e.g., update the UI)
+      const result = await response.json();
+      console.log(result);  // Log the response from the server
+      
+      // You can handle success/failure logic here
+      if (result.success) {
+          alert('Appointment booked successfully!');
+      } else {
+          alert('Error: ' + result.message);
+      }
+  } catch (error) {
+      console.error('Error:', error);
+  }
+});
