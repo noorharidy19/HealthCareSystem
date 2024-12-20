@@ -83,3 +83,57 @@ document.getElementById('appointmentForm').addEventListener('submit', async (eve
       console.error('Error:', error);
   }
 });
+
+const formatTime = (time) => {
+  // Ensure time is in HH:mm:ss format
+  return time.includes(':') && time.length === 5 ? time + ':00' : time;
+};
+
+document.getElementById('appointmentForm').addEventListener('submit', async (event) => {
+  event.preventDefault();
+
+  const formData = new FormData(event.target);
+
+  // Format start and end times before submission
+  formData.set('start_time', formatTime(formData.get('start_time')));
+  formData.set('end_time', formatTime(formData.get('end_time')));
+
+  try {
+      const response = await fetch('book.php', {
+          method: 'POST',
+          body: formData
+      });
+
+      const result = await response.json();
+      if (result.success) {
+          alert('Appointment booked successfully!');
+      } else {
+          alert('Error: ' + result.message);
+      }
+  } catch (error) {
+      console.error('Error:', error);
+  }
+});
+
+
+document.getElementById('doctor_id').addEventListener('change', function() {
+  var doctorId = this.value;
+  if (doctorId) {
+      var xhr = new XMLHttpRequest();
+      xhr.open('GET', 'getSlots.php?doctor_id=' + doctorId, true);
+      xhr.onload = function() {
+          if (xhr.status === 200) {
+              var slots = JSON.parse(xhr.responseText);
+              var slotSelect = document.getElementById('slot_id');
+              slotSelect.innerHTML = '<option value="">Select a Time Slot</option>';
+              slots.forEach(function(slot) {
+                  var option = document.createElement('option');
+                  option.value = slot.slot_id;
+                  option.textContent = slot.start_time + ' - ' + slot.end_time;
+                  slotSelect.appendChild(option);
+              });
+          }
+      };
+      xhr.send();
+  }
+});

@@ -173,14 +173,25 @@ Class Admin extends User{
           parent::__construct($id);
       }
   
-      public function addTimeSlot($startTime, $endTime) {
-          $this->timeSlots[] = ['startTime' => $startTime, 'endTime' => $endTime];
+      public function addTimeSlot($startTime, $endTime, $booked=false) {
+          $this->timeSlots[] = ['startTime' => $startTime, 'endTime' => $endTime,'booked'=>$booked];
       }
   
       public function getTimeSlots() {
           return $this->timeSlots;
       }
   
+// Mark a slot as booked or available
+public function updateBookingStatus($startTime, $endTime, $status) {
+  foreach ($this->timeSlots as &$slot) {
+      if ($slot['startTime'] === $startTime && $slot['endTime'] === $endTime) {
+          $slot['booked'] = $status; // Set status to true (booked) or false (available)
+          return true;
+      }
+  }
+  return false;
+}
+
       public static function addSlot($doctorId, $day, $startTime, $endTime) {
           // Ensure user is a doctor
           $stmt = $GLOBALS['conn']->prepare("SELECT UserType FROM users WHERE ID = ?");
@@ -192,8 +203,11 @@ Class Admin extends User{
           if ($user['UserType'] !== 'Doctor') {
               return false;
           }
-          $currentDate = date("Y-m-d"); // Get today's date in YYYY-MM-DD format
-          if ($day < $currentDate) {
+       //   $currentDate = date("Y-m-d"); // Get today's date in YYYY-MM-DD format
+       $currentDate = new DateTime();
+       $dayDate = new DateTime($day);  
+       
+       if ($dayDate < $currentDate) {
               // Set a session error message for a past date
               $_SESSION['error'] = "You cannot add a slot for a past day. Please choose a future date.";
               return false; // Return false to indicate the error
@@ -201,8 +215,8 @@ Class Admin extends User{
       
   
           // Prepare the SQL statement
-          $sql = "INSERT INTO doctor (doctor_id, day, start_time, end_time) 
-                  VALUES ('$doctorId', '$day', '$startTime', '$endTime')";
+          $sql = "INSERT INTO doctor (doctor_id, day, start_time, end_time,booked) 
+                  VALUES ('$doctorId', '$day', '$startTime', '$endTime',0)";
   
           // Execute the query
           if (mysqli_query($GLOBALS['conn'], $sql)) {
@@ -215,9 +229,10 @@ Class Admin extends User{
       }
   
       public static function getSlots($doctor_id) {
-        $sql = "SELECT * FROM doctor WHERE doctor_id = ?";
+        // Fetch the available time slots for the doctor
+        $sql = "SELECT slot_id, doctor_id, day, start_time, end_time FROM doctor WHERE doctor_id = ? AND booked=0";
         $stmt = mysqli_prepare($GLOBALS['conn'], $sql);
-        mysqli_stmt_bind_param($stmt, 'i', $this->id);
+        mysqli_stmt_bind_param($stmt, 'i', $doctor_id);
         mysqli_stmt_execute($stmt);
         $result = mysqli_stmt_get_result($stmt);
         return mysqli_fetch_all($result, MYSQLI_ASSOC);
@@ -280,10 +295,28 @@ Class Admin extends User{
   
    // Method to book an appointment
    public function bookAppointment($doctorID, $appointmentDate, $appointmentTime) {
-    // Create an Appointment object and call the addAppointment method
-    $appointment = new Appointment();
-    return $appointment->addAppointment($doctorID, $this->ID, $appointmentDate, $appointmentTime);
-  }
+    $stmt = $GLOBALS['conn']->prepare("SELECT booked FROM doctor WHERE doctor_id = ? AND day = ? AND start_time = ? AND end_time = ?");
+    $stmt->bind_param("isss", $doctorID, $appointmentDate, $appointmentTime, $appointmentTime);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $slot = $result->fetch_assoc();
+
+    if ($slot && $slot['booked'] == 1) {
+        return "This slot is already booked.";
+    }
+
+    // Proceed with booking the appointment by updating the 'booked' column
+    $updateStmt = $GLOBALS['conn']->prepare("UPDATE doctor SET booked = 1 WHERE doctor_id = ? AND day = ? AND start_time = ? AND end_time = ?");
+    $updateStmt->bind_param("isss", $doctorID, $appointmentDate, $appointmentTime, $appointmentTime);
+
+    if ($updateStmt->execute()) {
+        // Create an Appointment object and call the addAppointment method
+        $appointment = new Appointment();
+        return $appointment->addAppointment($doctorID, $this->ID, $appointmentDate, $appointmentTime);
+    } else {
+        return "Failed to book the appointment. Please try again.";
+    }
+}
   
   }
   

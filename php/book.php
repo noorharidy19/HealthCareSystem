@@ -177,7 +177,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <textarea name="message" id="message" class="form-control" rows="6" placeholder="Enter message..."></textarea>
           </div>
 
-          <!-- Doctor Dropdown (Dynamically populated) -->
+     
+<!-- Doctor Dropdown (Dynamically populated) -->
 <div class="col-12 col-sm-6 py-2">
     <select name="doctor_id" id="doctor_id" class="custom-select" required>
         <option value="">Select a Doctor</option>
@@ -186,7 +187,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $doctors = Doctor::getDoctors();
         if (!empty($doctors)) {
             foreach ($doctors as $doctor) {
-                echo "<option value='{$doctor->doctor_id}'>{$doctor->doctor_name}</option>";
+              echo "<option value='{$doctor['doctor_id']}'>{$doctor['doctor_name']}</option>";
             }
         } else {
             echo "<option value=''>No doctors available</option>";
@@ -194,7 +195,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         ?>
     </select>
 </div>
-
 <!-- Slots Dropdown (Initially empty) -->
 <div class="col-12 col-sm-6 py-2">
     <select name="slot_id" id="slot_id" class="custom-select" required>
@@ -250,4 +250,4 @@ document.getElementById('doctor_id').addEventListener('change', function() {
   <script src="../assets/js/jquery-3.5.1.min.js"></script>
   <script src="../assets/js/bootstrap.bundle.min.js"></script>
 </body>
-</html> 
+</html>
