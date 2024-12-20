@@ -1,6 +1,7 @@
 <?php
 include 'DB.php';
 class User{
+  protected $db;
 public $name;
 public $email;
 public $password;
@@ -22,6 +23,7 @@ public $DOb;
       $this->address = $row['Address'] ?? null;
       $this->userType = $row['UserType'] ?? null;
       $this->DOb = $row['DOB'] ?? null;
+      
         
     }
 
@@ -212,28 +214,176 @@ Class Admin extends User{
           }
       }
   
-      public function getSlots() {
-          $stmt = $this->db->prepare("SELECT * FROM doctor WHERE doctor_id = ?");
-          $stmt->execute([$this->id]);
-          return $stmt->fetchAll(PDO::FETCH_ASSOC);
+      public static function getSlots($doctor_id) {
+        $sql = "SELECT * FROM doctor WHERE doctor_id = ?";
+        $stmt = mysqli_prepare($GLOBALS['conn'], $sql);
+        mysqli_stmt_bind_param($stmt, 'i', $this->id);
+        mysqli_stmt_execute($stmt);
+        $result = mysqli_stmt_get_result($stmt);
+        return mysqli_fetch_all($result, MYSQLI_ASSOC);
+    }
+    
+      public static function getDoctors() {
+        // Query to get all doctors with their names from the users table
+        $sql = "SELECT d.doctor_id, u.Name AS doctor_name FROM doctor d
+                JOIN users u ON d.doctor_id = u.ID
+                WHERE u.UserType = 'doctor'";  // Ensure the user is a doctor
+        $result = mysqli_query($GLOBALS['conn'], $sql);
+        
+        if (!$result) {
+            error_log("Error fetching doctors: " . mysqli_error($GLOBALS['conn']));
+            return []; // Return an empty array in case of failure
+        }
+    
+        return mysqli_fetch_all($result, MYSQLI_ASSOC); // Returns an array of doctors
+    }
+    
+    
+  }
+
+
+
+  
+
+
+  Class Patient extends User{
+    public function __construct($id) {
+      parent::__construct($id);
+    }
+  
+     // Update patient profile information in the database
+     public function updateProfile($name, $email, $address) {
+      include("DB.php");
+  
+      // Validate input (simplified)
+      if (empty($name) || empty($email) || empty($address)) {
+          return "All fields are required.";
+      }
+      if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+          return "Invalid email format.";
+      }
+  
+      // Update profile in the database
+      $query = "UPDATE users SET Name = ?, Email = ?, Address = ? WHERE id = ?";
+      $stmt = $conn->prepare($query);
+      $stmt->bind_param("sssi", $name, $email, $address, $this->user_id);
+  
+      if ($stmt->execute()) {
+          return "Profile updated successfully.";
+      } else {
+          return "Failed to update profile. Please try again.";
+      }
+  
+      $stmt->close();
+      $conn->close();
+  }
+  
+   // Method to book an appointment
+   public function bookAppointment($doctorID, $appointmentDate, $appointmentTime) {
+    // Create an Appointment object and call the addAppointment method
+    $appointment = new Appointment();
+    return $appointment->addAppointment($doctorID, $this->ID, $appointmentDate, $appointmentTime);
+  }
+  
+  }
+  
+  
+  
+  
+  class Appointment {
+    public $appointmentID;
+    public $doctorID;
+    public $patientID;
+    public $appointmentDate;
+    public $specialty;
+    public $status; // e.g., Pending, Confirmed, Cancelled
+  
+    public function __construct($appointmentID = 0) {
+        if ($appointmentID != 0) {
+            $sql = "SELECT * FROM appointments WHERE appointment_id = $appointmentID";
+            $result = mysqli_query($GLOBALS['conn'], $sql);
+            if ($row = mysqli_fetch_assoc($result)) {
+                $this->appointmentID = $row['appointmentID'] ?? null;
+                $this->doctorID = $row['doctor_id'] ?? null;
+                $this->patientID = $row['patient_id'] ?? null;
+                $this->appointmentDate = $row['appointmentDate'] ?? null;
+                $this->specialty = $row['specialty'] ?? null;
+                $this->status = $row['status'] ?? null;
+            }
+        }
+    }
+  
+  
+    public function addAppointment($doctorID, $patientID, $appointmentDate, $specialty, $status = 'Pending') {
+      if (!$this->validateAppointmentDetails($doctorID, $patientID, $appointmentDate, $specialty)) {
+          return "Invalid appointment details.";
+      }
+      
+      $stmt = $GLOBALS['conn']->prepare(
+          "INSERT INTO appointments (doctor_id, patient_id, appointmentDate, specialty, status) 
+           VALUES (?, ?, ?, ?, ?)"
+      );
+      $stmt->bind_param("iisss", $doctorID, $patientID, $appointmentDate, $specialty, $status);
+      
+      if ($stmt->execute()) {
+          return true;
+      } else {
+          error_log("Failed to add appointment: " . $stmt->error);
+          return false;
       }
   }
-
-
-
   
-
-
-Class Patient extends User{
-  public function __construct($id) {
-    parent::__construct($id);
+  private function validateAppointmentDetails($doctorID, $patientID, $appointmentDate, $appointmentTime) {
+      // Basic validations for IDs and dates
+      return is_numeric($doctorID) && is_numeric($patientID) && strtotime($appointmentDate);
   }
-}
-Class Appointments{
-
-}
-Class MedicalRecords{
   
-}
+    // Retrieve all appointments for a specific patient
+    public function getAppointmentsByPatient($patientID) {
+        $stmt = $GLOBALS['conn']->prepare("SELECT * FROM appointments WHERE patient_id = ?");
+        $stmt->bind_param("i", $patientID);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        return $result->fetch_all(MYSQLI_ASSOC);
+    }
+  
+    // Retrieve all appointments for a specific doctor
+    public function getAppointmentsByDoctor($doctorID) {
+        $stmt = $GLOBALS['conn']->prepare("SELECT * FROM appointments WHERE doctor_id = ?");
+        $stmt->bind_param("i", $doctorID);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        return $result->fetch_all(MYSQLI_ASSOC);
+    }
+  
+    // Update appointment status
+    public function updateAppointmentStatus($appointmentID, $newStatus) {
+        $stmt = $GLOBALS['conn']->prepare("UPDATE appointments SET status = ? WHERE appointmentID = ?");
+        $stmt->bind_param("si", $newStatus, $appointmentID);
+  
+        if ($stmt->execute()) {
+            return true;
+        } else {
+            error_log("Error updating appointment: " . $stmt->error);
+            return false;
+        }
+    }
+  
+    // Delete an appointment
+    public function deleteAppointment($appointmentID) {
+        $stmt = $GLOBALS['conn']->prepare("DELETE FROM appointments WHERE appointmentID = ?");
+        $stmt->bind_param("i", $appointmentID);
+  
+        if ($stmt->execute()) {
+            return true;
+        } else {
+            error_log("Error deleting appointment: " . $stmt->error);
+            return false;
+        }
+    }
+  }
+  Class MedicalRecords{
+    
+  }
 
 ?>
