@@ -2,6 +2,9 @@
 include('DB.php');
 require_once 'Classes.php'; // Include your Doctor class (adjust path if necessary)
 
+// Set response header for JSON
+header('Content-Type: application/json');
+
 if (isset($_GET['doctor_id'])) {
     $doctor_id = $_GET['doctor_id'];
     
@@ -13,4 +16,5 @@ if (isset($_GET['doctor_id'])) {
 } else {
     echo json_encode([]);
 }
+
 ?>

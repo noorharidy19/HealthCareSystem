@@ -30,6 +30,27 @@
         exit(); // Exit if no user is found
     }
 
+    // Retrieve scheduled appointments with doctor details
+    $appointmentQuery = "
+        SELECT 
+            a.appointmentDate, 
+            a.specialty, 
+            u.Name AS doctor_name 
+        FROM 
+            appointments AS a
+        INNER JOIN 
+            doctor AS d ON a.doctor_id = d.doctor_id
+        INNER JOIN 
+            users AS u ON d.doctor_id = u.id
+        WHERE 
+            a.patient_id = ?
+        ORDER BY 
+            a.appointmentDate ASC";
+    $appointmentStmt = $conn->prepare($appointmentQuery);
+    $appointmentStmt->bind_param("i", $id);
+    $appointmentStmt->execute();
+    $appointmentResult = $appointmentStmt->get_result();
+
     ?>
 
     <meta charset="UTF-8">
@@ -66,6 +87,34 @@
             <button type="submit" id="save-btn" class="btn btn-success mt-3" style="display:none;">Save</button>
             <button type="button" id="cancel-btn" class="btn btn-secondary mt-3" style="display:none;" onclick="disableEditing()">Cancel</button>
         </form>
+    </div>
+         <!-- Scheduled Appointments Section -->
+    <div id="appointments-section" class="mt-5">
+        <h2>Scheduled Appointments</h2>
+        <?php if ($appointmentResult->num_rows > 0): ?>
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Specialty</th>
+                        <th>Doctor</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php while ($appointment = $appointmentResult->fetch_assoc()): ?>
+                        <tr>
+                            <td><?php echo htmlspecialchars($appointment['appointmentDate']); ?></td>
+                            <td><?php echo htmlspecialchars($appointment['specialty']); ?></td>
+                            <td><?php echo htmlspecialchars($appointment['doctor_name']); ?></td>
+                            <td><?php echo htmlspecialchars($appointment['status']); ?></td>
+                        </tr>
+                    <?php endwhile; ?>
+                </tbody>
+            </table>
+        <?php else: ?>
+            <p>No appointments scheduled.</p>
+        <?php endif; ?>
     </div>
 </div>
 

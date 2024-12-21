@@ -294,7 +294,7 @@ public function updateBookingStatus($startTime, $endTime, $status) {
   }
   
    // Method to book an appointment
-   public function bookAppointment($doctorID, $appointmentDate, $appointmentTime) {
+   public function bookAppointment($doctorID, $appointmentDate, $appointmentTime, $patientID, $specialty, $patientName, $doctorName) {
     $stmt = $GLOBALS['conn']->prepare("SELECT booked FROM doctor WHERE doctor_id = ? AND day = ? AND start_time = ? AND end_time = ?");
     $stmt->bind_param("isss", $doctorID, $appointmentDate, $appointmentTime, $appointmentTime);
     $stmt->execute();
@@ -311,8 +311,8 @@ public function updateBookingStatus($startTime, $endTime, $status) {
 
     if ($updateStmt->execute()) {
         // Create an Appointment object and call the addAppointment method
-        $appointment = new Appointment();
-        return $appointment->addAppointment($doctorID, $this->ID, $appointmentDate, $appointmentTime);
+        $appointment = new Appointment($GLOBALS['conn'], 0); // Pass the connection and a default appointmentID of 0
+        return $appointment->addAppointment($appointmentDate, $specialty, $patientID, $doctorID, $patientName, $doctorName);
     } else {
         return "Failed to book the appointment. Please try again.";
     }
@@ -324,56 +324,97 @@ public function updateBookingStatus($startTime, $endTime, $status) {
   
   
   class Appointment {
+    private $conn;
     public $appointmentID;
-    public $doctorID;
-    public $patientID;
+    public $patient_id;
+    public $doctor_id;
     public $appointmentDate;
+    
+    public $patientName;
+    public $doctorName;
     public $specialty;
-    public $status; // e.g., Pending, Confirmed, Cancelled
+   
+    
+
   
-    public function __construct($appointmentID = 0) {
-        if ($appointmentID != 0) {
-            $sql = "SELECT * FROM appointments WHERE appointment_id = $appointmentID";
-            $result = mysqli_query($GLOBALS['conn'], $sql);
-            if ($row = mysqli_fetch_assoc($result)) {
-                $this->appointmentID = $row['appointmentID'] ?? null;
-                $this->doctorID = $row['doctor_id'] ?? null;
-                $this->patientID = $row['patient_id'] ?? null;
-                $this->appointmentDate = $row['appointmentDate'] ?? null;
-                $this->specialty = $row['specialty'] ?? null;
-                $this->status = $row['status'] ?? null;
-            }
-        }
+    public function __construct($conn,$appointmentID) {
+      $this->conn = $conn;
+     
+      if ($appointmentID != 0) {
+        $sql = "SELECT a.*, 
+                       p.name AS patientName, 
+                       d.name AS doctorName 
+                FROM appointments a 
+                JOIN users p ON a.patient_id = p.id AND p.usertype = 'patient' 
+                JOIN users d ON a.doctor_id = d.id AND d.usertype = 'doctor' 
+                WHERE a.appointment_id = ?";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bind_param("i", $appointmentID);
+        $stmt->execute();
+        $result = $stmt->get_result();
     }
-  
-  
-    public function addAppointment($doctorID, $patientID, $appointmentDate, $specialty, $status = 'Pending') {
-      if (!$this->validateAppointmentDetails($doctorID, $patientID, $appointmentDate, $specialty)) {
-          return "Invalid appointment details.";
-      }
-      
-      $stmt = $GLOBALS['conn']->prepare(
-          "INSERT INTO appointments (doctor_id, patient_id, appointmentDate, specialty, status) 
-           VALUES (?, ?, ?, ?, ?)"
-      );
-      $stmt->bind_param("iisss", $doctorID, $patientID, $appointmentDate, $specialty, $status);
-      
-      if ($stmt->execute()) {
-          return true;
-      } else {
-          error_log("Failed to add appointment: " . $stmt->error);
-          return false;
-      }
+    if ($row = $result->fetch_assoc()) {
+      $this->appointmentID = $row['appointment_id'] ?? null;
+      $this->appointmentDate = $row['appointmentDate'] ?? null;
+      $this->specialty = $row['specialty'] ?? null;
+      $this->patientName = $row['patientName'] ?? null;
+      $this->doctorName = $row['doctorName'] ?? null;
   }
+}
+
+
+public function getAppointment($appointmentID) {
+if ($appointmentID != 0) {
+  $sql = "SELECT a.*, 
+                 p.name AS patientName, 
+                 d.name AS doctorName 
+          FROM appointments a 
+          JOIN users p ON a.patient_id = p.id AND p.usertype = 'patient' 
+          JOIN users d ON a.doctor_id = d.id AND d.usertype = 'doctor' 
+          WHERE a.appointment_id = ?";
+  $stmt = $this->conn->prepare($sql);
+  $stmt->bind_param("i", $appointmentID);
+  $stmt->execute();
+  $result = $stmt->get_result();
+
+  if ($result->num_rows > 0) {
+      return $result->fetch_assoc(); // Fetch and return the appointment data
+  } else {
+      return "No appointment found.";
+  }
+} else {
+  return "Invalid appointment ID.";
+}
+}
+    
+
+public function addAppointment($appointmentDate, $specialty, $patient_id, $doctor_id, $patientName, $doctorName) {
+  if (!$this->validateAppointmentDetails($appointmentDate)) {
+      return "Invalid appointment details.";
+  }
+
+  $stmt = $this->conn->prepare(
+      "INSERT INTO appointments ( patient_id,doctor_id, appointmentDate, specialty, patientName, doctorName) 
+       VALUES (?, ?, ?, ?, ?, ?)"
+  );
+  $stmt->bind_param("iissss", $doctor_id, $patient_id, $appointmentDate, $patientName, $doctorName,$specialty);
+
+  if ($stmt->execute()) {
+      return true;
+  } else {
+      error_log("Failed to add appointment: " . $stmt->error);
+      return false;
+  }
+}
   
-  private function validateAppointmentDetails($doctorID, $patientID, $appointmentDate, $appointmentTime) {
+  private function validateAppointmentDetails($appointmentDate) {
       // Basic validations for IDs and dates
-      return is_numeric($doctorID) && is_numeric($patientID) && strtotime($appointmentDate);
+      return   strtotime($appointmentDate) > time() ;
   }
   
     // Retrieve all appointments for a specific patient
     public function getAppointmentsByPatient($patientID) {
-        $stmt = $GLOBALS['conn']->prepare("SELECT * FROM appointments WHERE patient_id = ?");
+        $stmt = $this->conn->prepare("SELECT * FROM appointments WHERE patient_id = ?");
         $stmt->bind_param("i", $patientID);
         $stmt->execute();
         $result = $stmt->get_result();
@@ -382,7 +423,7 @@ public function updateBookingStatus($startTime, $endTime, $status) {
   
     // Retrieve all appointments for a specific doctor
     public function getAppointmentsByDoctor($doctorID) {
-        $stmt = $GLOBALS['conn']->prepare("SELECT * FROM appointments WHERE doctor_id = ?");
+        $stmt = $this->conn->prepare("SELECT * FROM appointments WHERE doctor_id = ?");
         $stmt->bind_param("i", $doctorID);
         $stmt->execute();
         $result = $stmt->get_result();
@@ -404,7 +445,7 @@ public function updateBookingStatus($startTime, $endTime, $status) {
   
     // Delete an appointment
     public function deleteAppointment($appointmentID) {
-        $stmt = $GLOBALS['conn']->prepare("DELETE FROM appointments WHERE appointmentID = ?");
+        $stmt = $GLOBALS['conn']->prepare("DELETE FROM appointments WHERE appointment_id = ?");
         $stmt->bind_param("i", $appointmentID);
   
         if ($stmt->execute()) {
@@ -414,7 +455,26 @@ public function updateBookingStatus($startTime, $endTime, $status) {
             return false;
         }
     }
+    public function getAppointmentsByUserId($userId) {
+      $stmt = $this->db->prepare("SELECT * FROM appointments WHERE user_id = ?");
+      $stmt->bind_param("i", $userId);
+      $stmt->execute();
+      $result = $stmt->get_result();
+
+      return $result->fetch_all(MYSQLI_ASSOC); // Return all appointments as an associative array
   }
+
+  // Retrieve all appointments (e.g., for admin purposes)
+  public function getAllAppointments() {
+      $stmt = $this->db->prepare("SELECT * FROM appointments");
+      $stmt->execute();
+      $result = $stmt->get_result();
+
+      return $result->fetch_all(MYSQLI_ASSOC); // Return all appointments as an associative array
+  }
+}
+
+  
   Class MedicalRecords{
     
   }
