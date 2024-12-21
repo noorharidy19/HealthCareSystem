@@ -17,7 +17,9 @@
 
   <!-- Back to top button -->
   <div class="back-to-top"></div>
-
+  <?php
+  $isLoggedIn = isset($_SESSION['user_id']) && !empty($_SESSION['user_id']);
+?>
   <header>
     <div class="topbar">
       <div class="container">
@@ -60,9 +62,6 @@
 
         <div class="collapse navbar-collapse" id="navbarSupport">
           <ul class="navbar-nav ml-auto">
-              <li class="nav-item active">
-                  <a class="nav-link" href="index.php">Home</a>
-              </li>
               <li class="nav-item">
                   <a class="nav-link" href="about.php">About Us</a>
               </li>
@@ -75,9 +74,15 @@
               <li class="nav-item">
                   <a class="nav-link" href="contact.php">Contact</a>
               </li>
-              <li class="nav-item">
-                  <a class="btn btn-primary ml-lg-3" href="signup.php">Login / Register</a>
-              </li>
+              <?php if ($isLoggedIn): ?>
+                  <li class="nav-item">
+                      <a class="btn btn-primary ml-lg-3" href="logout.php">Logout</a>
+                  </li>
+              <?php else: ?>
+                  <li class="nav-item">
+                      <a class="btn btn-primary ml-lg-3" href="signup.php">Login / Register</a>
+                  </li>
+              <?php endif; ?>
               
           </ul>
       </div> <!-- .navbar-collapse -->
