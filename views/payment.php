@@ -233,7 +233,7 @@ button:hover {
                 <div class="cvv" id="card-cvv-display">###</div>
             </div>
         </div>
-        <form id="paymentForm">
+        <form id="paymentForm" onsubmit="confirmPayment(event)">
             <div class="form-group">
                 <label for="cardNumber">Card Number</label>
                 <input type="text" id="cardNumber" maxlength="16" required placeholder="#### #### #### ####">
@@ -255,6 +255,12 @@ button:hover {
     </div>
 
     <script>
+        function confirmPayment(event) {
+            event.preventDefault(); // Prevent the default form submission
+            if (confirm("Payment successful. Appointments booked successfully!")) {
+                document.getElementById("paymentform").submit(); // Submit the form if confirmed
+            }
+        }
         // Update card details in real-time
         document.getElementById('cardNumber').addEventListener('input', function() {
             let formattedCardNumber = this.value.replace(/\D/g, '').replace(/(.{4})/g, '$1 ').trim();

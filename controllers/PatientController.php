@@ -50,7 +50,7 @@ class PatientController {
             // Add the appointment
             if (Appointments::addAppointment($patientID, $doctorName, $time ,$status)) {
                 // Success: Redirect or display a success message
-                header('Location: Patient.php?success=1');
+                header('Location: payment.php?success=1');
                 exit();
             } else {
                 // Failure: Redirect or display an error message

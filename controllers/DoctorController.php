@@ -35,10 +35,10 @@ class DoctorController {
              
             if ($result) {
                 $_SESSION['success'] = "Slot added successfully!";
-                header("Location: /mvc/views/Doctor.php");
+                header("Location: Doctor.php");
             } else {
                 $_SESSION['error'] = "Failed to add slot. Please check your input.";
-                header("Location: /mvc/views/Doctor.php");
+                header("Location: Doctor.php");
             }
         }
     }
