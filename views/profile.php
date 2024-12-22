@@ -5,7 +5,7 @@
     require_once __DIR__ . '/../models/Appointments.php';
 require_once __DIR__ . '/../includes/auth.php';
 require_once(__DIR__ . '/../controllers/PatientController.php');
-
+ checkAuthentication('Patient');
     // Check if the user is logged in
     if (!isset($_SESSION['user_id'])) {
         header("Location: login.php");
