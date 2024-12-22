@@ -33,6 +33,7 @@ require_once(__DIR__ . '/../controllers/PatientController.php');
     $appointmentQuery = "
     SELECT 
         a.time AS appointment_time, 
+        a.status AS status,
         d.field AS specialty, 
         u.Name AS doctor_name 
     FROM 
@@ -103,7 +104,7 @@ $appointmentResult = $appointmentStmt->get_result();
                 <tbody>
                     <?php while ($appointment = $appointmentResult->fetch_assoc()): ?>
                         <tr>
-                            <td><?php echo htmlspecialchars($appointment['appointmentDate']); ?></td>
+                            <td><?php echo htmlspecialchars($appointment['appointment_time']); ?></td>
                             <td><?php echo htmlspecialchars($appointment['specialty']); ?></td>
                             <td><?php echo htmlspecialchars($appointment['doctor_name']); ?></td>
                             <td><?php echo htmlspecialchars($appointment['status']); ?></td>
