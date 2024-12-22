@@ -82,7 +82,9 @@
                   <li class="nav-item">
                       <a class="btn btn-primary ml-lg-3" href="signup.php">Login / Register</a>
                   </li>
-              
+                  <li class="nav-item">
+            <a class="nav-link" href="profile.php"><i class="fas fa-user-circle"></i> Profile</a>
+          </li>
               
           </ul>
       </div> <!-- .navbar-collapse -->
