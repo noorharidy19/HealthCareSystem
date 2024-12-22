@@ -95,11 +95,12 @@
         <<div class="chat-message">
     <input type="text" id="user-input" placeholder="Type a message...">
     <button onclick="sendMessage()">Send</button>
+    
+    <button id="speakButton">🎤</button>
     <label id="image-button" for="image-input">
     <i class="fas fa-upload" style="font-size: 24px;"></i>
     </label>
-    <button id="speakButton">🎤</button>
-    <input type="file" id="image-input" accept="image/*">''
+    <input type="file" id="image-input" accept="image/*" style="display: none;">
 </div>
 
 <script src="../assets/js/chatbot.js"></script>
