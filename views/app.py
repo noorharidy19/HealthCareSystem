@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify, render_template
+from flask import Flask, request, jsonify, render_template, session 
 from flask_cors import CORS
 from flask_socketio import SocketIO, join_room, leave_room, send
 import google.generativeai as genai
@@ -105,6 +105,13 @@ symptom_diagnosis_mapping = {
     "weight loss": "Possible causes include diet, exercise, or medical conditions such as hyperthyroidism."
 }
 
+medical_fields =[
+    "Dental",
+    "Cardiology", 
+    "Dermatology",
+    "Neurology",
+    "Orthopedics" ]
+
 # Function to extract text from image using OCR
 def extract_text_from_image(image):
     try:
@@ -132,6 +139,21 @@ def generate():
     prompt = data.get("prompt", "").lower()
     print(f"Received prompt: {prompt}")  # Debugging: Print the received prompt
 
+    if "book an appointment" in prompt or "schedule an appointment" in prompt:
+        session['appointment_stage'] = 'choose_field'
+        print("Appointment booking requested")  # Debugging
+        # Create a numbered list of medical fields
+        numbered_fields = "\n".join([f"{i + 1} - {field}" for i, field in enumerate(medical_fields)])
+        return jsonify({
+            "response": f"Sure! Here are the available medical fields you can choose from:\n{numbered_fields}\nPlease respond with the name of your choice."
+        }) 
+        
+    if "Dental" in prompt or "dental" in prompt:
+        session['appointment_stage'] ='choose_appointment'
+        return jsonify({
+        "response": f"Here are the available Dental appointments:\n25-12-2024, From 3:15 PM To 5:15 PM with Dr Malak"
+     })
+        
     # Check for hardcoded symptom-medication mappings
     for symptom in symptom_medication_mapping:
         if symptom in prompt:
