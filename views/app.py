@@ -118,6 +118,14 @@ def extract_text_from_image(image):
 def index():
     return render_template('chat.php')
 
+@app.route("/your-chatbot-endpoint", methods=["POST"])
+def chatbot():
+    data = request.json
+    user_message = data.get("prompt", "")
+    # Your chatbot logic here
+    response = f"Hello! You said: {user_message}"
+    return jsonify({"response": response})
+
 @app.route('/generate', methods=['POST'])
 def generate():
     data = request.json
@@ -147,7 +155,7 @@ def generate():
         room = "support_group"
         link = f"http://127.0.0.1:5000/chat/{room}"
         return jsonify({
-            "response": f"You can join the support group here: {link}"
+             "response": f'You can join the support group here: <a href="{link}" target="_blank">Join Support Group</a>'
         })
 
     print("No matching symptom found, using generative AI")  # Debugging: Print if no symptom is found
