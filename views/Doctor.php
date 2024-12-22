@@ -1,25 +1,33 @@
+<?php
+require_once(__DIR__ . '/../includes/auth.php');
+require_once(__DIR__ . '/../controllers/DoctorController.php');
+
+// Check if the user is authenticated as a doctor
+checkAuthentication('Doctor');
+
+// Retrieve the ID of the current doctor from the session
+$doctorId = $_SESSION['user_id'];
+
+// Create an instance of the DoctorController
+$controller = new DoctorController();
+
+// Call the addSlotAction method with the doctor ID
+$controller->addSlotAction($doctorId);
+?> 
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-
   <meta name="copyright" content="MACode ID, https://macodeid.com/">
-
-  <title>One Health - Medical Center HTML5 Template</title>
-
+  <title>Doctor Page - One Health</title>
   <link rel="stylesheet" href="../assets/css/maicons.css">
-
   <link rel="stylesheet" href="../assets/css/bootstrap.css">
-
   <link rel="stylesheet" href="../assets/vendor/owl-carousel/css/owl.carousel.css">
-
   <link rel="stylesheet" href="../assets/vendor/animate/animate.css">
-
   <link rel="stylesheet" href="../assets/css/theme.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"> <!-- Font Awesome CSS -->
 </head>
 <body>
 
@@ -68,98 +76,123 @@
 
         <div class="collapse navbar-collapse" id="navbarSupport">
           <ul class="navbar-nav ml-auto">
-            <li class="nav-item">
-              <a class="nav-link" href="index.php">Home</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="about.php">About Us</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="doctors.php">Doctors</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="blog.php">News</a>
-            </li>
-            <li class="nav-item active">
-              <a class="nav-link" href="contact.php">Contact</a>
-            </li>
-            <li class="nav-item">
-              <a class="btn btn-primary ml-lg-3" href="#">Login / Register</a>
-            </li>
-            <li class="nav-item">
-                            <a class="nav-link" href="chatbot.php" id="chatbot-icon" title="chatbot">
-                                <i class="fas fa-robot"></i>
-                            </a>
-                        </li>
+              <li class="nav-item active">
+                  <a class="nav-link" href="index.php">Home</a>
+              </li>
+              <li class="nav-item">
+                  <a class="nav-link" href="about.php">About Us</a>
+              </li>
+              <li class="nav-item">
+                  <a class="nav-link" href="doctors.php">Doctors</a>
+              </li>
+              <li class="nav-item">
+                  <a class="nav-link" href="blog.php">News</a>
+              </li>
+              <li class="nav-item">
+                  <a class="nav-link" href="contact.php">Contact</a>
+              </li>
+             
+                  <li class="nav-item">
+                      <a class="btn btn-primary ml-lg-3" href="logout.php">Logout</a>
+                  </li>
+             
+                 
+                
+              <li class="nav-item">
+                  <a class="nav-link" href="chatbot.php" id="chatbot-icon" title="chatbot">
+                      <i class="fas fa-robot"></i>
+                  </a>
+              </li>
+              <li class="nav-item">
+                  <a class="nav-link" href="profile.php"><i class="fas fa-user-circle"></i> Profile</a>
+              </li>
           </ul>
         </div> <!-- .navbar-collapse -->
       </div> <!-- .container -->
     </nav>
   </header>
+</body>
+</html>
 
-  <div class="page-banner overlay-dark bg-image" style="background-image: url(../assets/img/bg_image_1.jpg);">
-    <div class="banner-section">
-      <div class="container text-center wow fadeInUp">
-        <nav aria-label="Breadcrumb">
-          <ol class="breadcrumb breadcrumb-dark bg-transparent justify-content-center py-0 mb-2">
-            <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-            <li class="breadcrumb-item active" aria-current="page">Contact</li>
-          </ol>
-        </nav>
-        <h1 class="font-weight-normal">Contact</h1>
-      </div> <!-- .container -->
-    </div> <!-- .banner-section -->
-  </div> <!-- .page-banner -->
-
-  <div class="page-section">
-    <div class="container">
-      <h1 class="text-center wow fadeInUp">Get in Touch</h1>
-
-      <form class="contact-form mt-5">
-        <div class="row mb-3">
-          <div class="col-sm-6 py-2 wow fadeInLeft">
-            <label for="fullName">Name</label>
-            <input type="text" id="fullName" class="form-control" placeholder="Full name..">
-          </div>
-          <div class="col-sm-6 py-2 wow fadeInRight">
-            <label for="emailAddress">Email</label>
-            <input type="text" id="emailAddress" class="form-control" placeholder="Email address..">
-          </div>
-          <div class="col-12 py-2 wow fadeInUp">
-            <label for="subject">Subject</label>
-            <input type="text" id="subject" class="form-control" placeholder="Enter subject..">
-          </div>
-          <div class="col-12 py-2 wow fadeInUp">
-            <label for="message">Message</label>
-            <textarea id="message" class="form-control" rows="8" placeholder="Enter Message.."></textarea>
-          </div>
-        </div>
-        <button type="submit" class="btn btn-primary wow zoomIn">Send Message</button>
-      </form>
+  <div class="page-hero bg-image overlay-dark" style="background-image: url(../assets/img/bg_image_1.jpg);">
+    <div class="hero-section">
+      <div class="container text-center wow zoomIn">
+        <span class="subhead">Manage Your Schedule</span>
+        <h1 class="display-4">Doctor Dashboard</h1>
+      </div>
     </div>
   </div>
 
-  <div class="maps-container wow fadeInUp">
-    <div id="google-maps"></div>
-  </div>
-
-  <div class="page-section banner-home bg-image" style="background-image: url(../assets/img/banner-pattern.svg);">
-    <div class="container py-5 py-lg-0">
-      <div class="row align-items-center">
-        <div class="col-lg-4 wow zoomIn">
-          <div class="img-banner d-none d-lg-block">
-            <img src="../assets/img/mobile_app.png" alt="">
+  <div class="page-section bg-light">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-6 py-3 wow zoomIn">
+          <div class="card-service">
+            <div class="circle-shape bg-secondary text-white">
+            <a href="#" data-toggle="modal" data-target="#addSlotModal">
+             
+            <span class="mai-calendar"></span></a>
+</a>
+            </div>
+            <p>Add Slots</p>
+         
           </div>
         </div>
-        <div class="col-lg-8 wow fadeInRight">
-          <h1 class="font-weight-normal mb-3">Get easy access of all features using One Health Application</h1>
-          <a href="#"><img src="../assets/img/google_play.svg" alt=""></a>
-          <a href="#" class="ml-2"><img src="../assets/img/app_store.svg" alt=""></a>
+        <div class="col-md-6 py-3 wow zoomIn">
+          <div class="card-service">
+          
+          <div class="circle-shape bg-primary text-white">
+            <a href="view_patients.php">
+              <span class="mai-people"></span>
+              </a>
+            </div>
+            <p><span>View</span> Patients</p>
+            
+            </a>
+          </div>
         </div>
       </div>
     </div>
-  </div> <!-- .banner-home -->
+  </div>
 
+  <!-- The Modal -->
+  <!-- The Modal -->
+<div class="modal fade" id="addSlotModal" tabindex="-1" role="dialog" aria-labelledby="addSlotModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addSlotModalLabel">Add Slot</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="Doctor.php" method="post">
+                    <div class="form-group">
+                        <label for="day">Day</label>
+                        <input type="date" class="form-control" id="day" name="day" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="startTime">Start Time</label>
+                        <input type="time" class="form-control" id="startTime" name="startTime" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="endTime">End Time</label>
+                        <input type="time" class="form-control" id="endTime" name="endTime" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="field">Field</label>
+                        <select class="form-control" id="field" name="field" required>
+    <option value="cardiology">Cardiology</option>
+    <option value="neurology">Neurology</option>
+    <option value="orthopaedics">Orthopaedics</option>
+</select>
+                    <button type="submit" class="btn btn-primary">Add Slot</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
   <footer class="page-footer">
     <div class="container">
       <div class="row px-md-3">
@@ -213,18 +246,10 @@
   </footer>
 
 <script src="../assets/js/jquery-3.5.1.min.js"></script>
-
 <script src="../assets/js/bootstrap.bundle.min.js"></script>
-
 <script src="../assets/vendor/owl-carousel/js/owl.carousel.min.js"></script>
-
 <script src="../assets/vendor/wow/wow.min.js"></script>
-
-<script src="../assets/js/google-maps.js"></script>
-
 <script src="../assets/js/theme.js"></script>
-
-<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAIA_zqjFMsJM_sxP9-6Pde5vVCTyJmUHM&callback=initMap"></script>
   
 </body>
 </html>

@@ -1,38 +1,8 @@
 <?php
-include('DB.php'); // Include your database connection
-include 'Classes.php'; // Include the User class
+require_once(__DIR__ . '/../controllers/AdminController.php');
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    // Debugging: Print received form data
-    echo "<pre>";
-    print_r($_POST);
-    echo "</pre>";
-
-    // Sanitize form data
-    $name = htmlspecialchars($_POST['name']);
-    $email = htmlspecialchars($_POST['email']);
-    $password = htmlspecialchars($_POST['password']);
-    $phone = htmlspecialchars($_POST['phone']);
-    $address = htmlspecialchars($_POST['address']);
-    $userType = htmlspecialchars($_POST['userType']);
-    $DOb = htmlspecialchars($_POST['dob']);
-    $gender = htmlspecialchars($_POST['gender']);
-
-    $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
-
-    // Add the user
-    if (Admin::addUser($name, $email,$hashedPassword, $phone, $address, $userType, $DOb, $gender)) {
-        echo "User added successfully.";
-        // Redirect to a success page or dashboard
-        header("Location: admin.php");
-        exit();
-    } else {
-        echo "Failed to add user.";
-        // Redirect to an error page or show an error message
-        header("Location: adduser.php?error=1");
-        exit();
-    }
-}
+$controller = new AdminController();
+$controller->add();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -51,7 +21,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <div class="container form-container">
   <br>
     <h2 class="form-header">Add User</h2>
-    <form id="userForm" action="" method="POST" onsubmit="return validateForm()">
+    <form id="userForm" action="Adduser.php" method="POST" onsubmit="return validateForm()">
       <!-- User Type Selection -->
       <div class="form-group">
         <label for="userType">
@@ -69,24 +39,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         </div>
         <small class="error-message" id="userTypeError"></small>
       </div>
-
-      <!-- Doctor Specialization (Shown only if Doctor is selected) -->
-      <!-- <div class="form-group hidden" id="specializationField">
-        <label for="specialization">
-          <img src="../assets/img/icons/doctor2.png" alt="person Icon" style="width: 20px; vertical-align: middle; margin-right: 5px;"> 
-          Doctor Specialization
-        </label>
-        <select name="specialization" id="specialization" class="form-control">
-          <option value="">Select Specialization</option>
-          <option value="Cardiology">Cardiology</option>
-          <option value="Dermatology">Dermatology</option>
-          <option value="Pediatrics">Pediatrics</option>
-          <option value="Neurology">Neurology</option>
-          <option value="Orthopedics">Orthopedics</option>
-          <!-- Add more specializations as needed -->
-        <!-- </select>
-        <small class="error-message" id="specializationError"></small>
-      </div> --> 
 
       <!-- Patient Name -->
       <div class="form-group">

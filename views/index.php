@@ -74,15 +74,15 @@
               <li class="nav-item">
                   <a class="nav-link" href="contact.php">Contact</a>
               </li>
-              <?php if ($isLoggedIn): ?>
-                  <li class="nav-item">
+              
+                  <!-- <li class="nav-item">
                       <a class="btn btn-primary ml-lg-3" href="logout.php">Logout</a>
-                  </li>
-              <?php else: ?>
+                  </li> -->
+              
                   <li class="nav-item">
                       <a class="btn btn-primary ml-lg-3" href="signup.php">Login / Register</a>
                   </li>
-              <?php endif; ?>
+              
               
           </ul>
       </div> <!-- .navbar-collapse -->

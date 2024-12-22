@@ -1,3 +1,9 @@
+<?php
+require_once(__DIR__ . '/../includes/auth.php');
+
+// Check if the user is authenticated as a patient
+checkAuthentication('Patient');
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -85,9 +91,11 @@
               <li class="nav-item">
                   <a class="nav-link" href="contact.php">Contact</a>
               </li>
-              <li class="nav-item">
-                  <a class="btn btn-primary ml-lg-3" href="signup.php">Login / Register</a>
-              </li>
+              
+                  <li class="nav-item">
+                      <a class="btn btn-primary ml-lg-3" href="logout.php">Logout</a>
+                  </li>
+     
               <li class="nav-item">
                   <a class="nav-link" href="chatbot.php" id="chatbot-icon" title="chatbot">
                       <i class="fas fa-robot"></i>
@@ -119,15 +127,16 @@
       <div class="col-md-3 py-3 wow zoomIn">
         <div class="card-service">
           <div class="circle-shape bg-secondary text-white">
-            <span class="mai-chatbubbles-outline"></span>
+          <a href="chatbot.php">  <span class="mai-chatbubbles-outline"></span></span></a> 
+           
           </div>
-          <p><span>Chat</span> with a doctor</p>
+          <p><span>Chatbot</p>
         </div>
       </div>
       <div class="col-md-3 py-3 wow zoomIn">
         <div class="card-service">
           <div class="circle-shape bg-primary text-white">
-           <a href="book.php"> <span class="fa fa-calendar"></span></a> 
+           <a href="booking.php"> <span class="fa fa-calendar"></span></a> 
           </div>
           <p><span>Book </span>an appointment</p>
         </div>

@@ -1,3 +1,16 @@
+<?php
+
+require_once __DIR__ . '/../controllers/AdminController.php';
+require_once(__DIR__ . '/../includes/auth.php');
+
+// Check if the user is authenticated as a patient
+checkAuthentication('Admin');
+$controller = new AdminController();
+$users = $controller->index();
+if (isset($_GET['action']) && $_GET['action'] == 'Delete' && isset($_GET['ID'])) {
+  $controller->delete();
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -40,9 +53,6 @@
             <li class="nav-item">
               <a class="nav-link" href="reports.php">Reports</a>
             </li>
-            <li class="nav-item">
-              <a class="btn btn-primary ml-lg-3" href="#">Logout</a>
-            </li>
           </ul>
         </div> 
       </div>
@@ -70,7 +80,7 @@
       <div class="card text-center">
         <div class="card-body">
           <h5 class="card-title">Appointments Today</h5>
-          <p class="card-text"><i class="fas fa-calendar-check fa-3x"></i></p>
+          <p class="card-text"><a href="Calendar.php"><i class="fas fa-calendar-check fa-3x"></i></p>
         </div>
       </div>
 
@@ -86,58 +96,56 @@
     <h2 class="text-center mt-5">Admin Dashboard Overview</h2>
     <p class="text-center">Here you can manage all aspects of the system, from user accounts to appointments and reports.</p>
     <div class="add-btn">
-      <a href="adduser.php" class="btn btn-sm btn-primary">Add User</a>
+      <a href="AddUser.php" class="btn btn-sm btn-primary">Add User</a>
     </div>
-
     <table class="table table-striped">
-    <table class="table table-striped">
-      <thead>
-        <tr>
-          <th>#</th>
-          <th>Name</th>
-          <th>Email</th>
-          <th>Gender</th>
-          <th>Address</th>
-          <th>UserType</th>
-          <th>DOB</th>
-        </tr>
-      </thead>
-      <tbody>
-      <?php
-        include 'DB.php';
-
-        $sql = "SELECT * FROM users";
-        $result = mysqli_query($conn, $sql);
-
-        if (mysqli_num_rows($result) > 0) {
-          $counter = 1;
-          while ($row = mysqli_fetch_assoc($result)) {
-            echo "<tr>";
-            echo "<td>" . $counter++ . "</td>";
-            echo "<td>" . $row['Name'] . "</td>";
-            echo "<td>" . $row['Email'] . "</td>";
-            echo "<td>" . $row['gender'] . "</td>";
-            echo "<td>" . $row['Address'] . "</td>";
-            echo "<td>" . $row['UserType'] . "</td>";
-            echo "<td>" . $row['DOB'] . "</td>";
-            echo "<td>
-                    <a href='edituser.php?id=" . htmlspecialchars($row['ID']) . "' class='btn btn-sm btn-primary'>Edit</a>
-            <button class='btn btn-sm btn-danger' onclick='confirmDelete(" . $row['ID'] . ")'>Delete</button>
-                  </td>";
-            echo "</tr>";
-          }
-        } else {
-          echo "<tr><td colspan='9' class='text-center'>No users found</td></tr>";
-        }
-
-        mysqli_close($conn);
-        ?>
-        <!-- Additional rows as needed -->
-      </tbody>
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Gender</th>
+                <th>Address</th>
+                <th>UserType</th>
+                <th>DOB</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php 
+            
+            // Check if data is available
+            if (!empty($users)) {
+                $counter = 1; // To number rows
+                foreach ($users as $user): ?>
+                    <tr>
+                        <td><?php echo $counter++; ?></td>
+                        <td><?php echo htmlspecialchars($user['Name']); ?></td>
+                        <td><?php echo htmlspecialchars($user['Email']); ?></td>
+                        <td><?php echo htmlspecialchars($user['phone']); ?></td>
+                        <td><?php echo htmlspecialchars($user['gender']); ?></td>
+                        <td><?php echo htmlspecialchars($user['Address']); ?></td>
+                        <td><?php echo htmlspecialchars($user['UserType']); ?></td>
+                        <td><?php echo htmlspecialchars($user['DOB']); ?></td>
+                        <td>
+                            <a href="Edituser.php?id=<?php echo htmlspecialchars($user['ID']); ?>" class="btn btn-sm btn-primary">Edit</a>
+                            <<button action="delete" class="btn btn-sm btn-danger" onclick="confirmDelete(<?php echo htmlspecialchars($user['ID']); ?>)">Delete</button>
+                        </td>
+                    </tr>
+            <?php 
+                endforeach; 
+            } else { ?>
+                <tr>
+                    <td colspan="9">No users found</td>
+                </tr>
+            <?php } ?>
+        </tbody>
     </table>
   </div>
   <!-- PopUp Container -->
-  <div id="confirmModal" class="modal" style="display:none;">
+<!-- PopUp Container -->
+<div id="confirmModal" class="modal" style="display:none;">
     <div class="modal-content">
         <p>Are you sure you want to delete?</p>
         <div class="modal-buttons">
@@ -145,7 +153,7 @@
             <button id="cancelDeleteBtn" class="btn btn-secondary" onclick="closeModal()">Cancel</button>
         </div>
     </div>
-</div>
+  </div>
 
 
   <!-- Footer -->
@@ -168,4 +176,3 @@
 
 </body>
 </html>
-
