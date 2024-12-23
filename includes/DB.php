@@ -1,5 +1,11 @@
 <?php
-session_start();
+
+if (session_status() == PHP_SESSION_NONE) {
+    session_start(); // Start the session if it is not already started
+}
+
+// Your database connection code here
+
 $servername = "localhost";
 $username = "root"; // Replace with your database username
 $password = ""; // Replace with your database password

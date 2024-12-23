@@ -1,5 +1,5 @@
 <?php
-require_once ('../models/AdminModel.php');
+require_once(__DIR__ . '/../models/AdminModel.php');
 
 class AdminController {
     public function delete() {
