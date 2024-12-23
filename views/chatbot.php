@@ -1,3 +1,7 @@
+<?php
+require_once(__DIR__ . '/../includes/auth.php');
+checkAuthentication('Patient');
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -71,7 +75,7 @@
                             <a class="nav-link" href="contact.php">Contact</a>
                         </li>
                         <li class="nav-item">
-                            <a class="btn btn-primary ml-lg-3" href="#">Login / Register</a>
+                            <a class="btn btn-primary ml-lg-3" href="logout.php">Logout</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="chatbot.php" id="chatbot-icon" title="chatbot">
