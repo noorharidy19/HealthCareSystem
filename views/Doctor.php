@@ -98,14 +98,7 @@ $controller->addSlotAction($doctorId);
              
                  
                 
-              <li class="nav-item">
-                  <a class="nav-link" href="chatbot.php" id="chatbot-icon" title="chatbot">
-                      <i class="fas fa-robot"></i>
-                  </a>
-              </li>
-              <li class="nav-item">
-                  <a class="nav-link" href="profile.php"><i class="fas fa-user-circle"></i> Profile</a>
-              </li>
+             
           </ul>
         </div> <!-- .navbar-collapse -->
       </div> <!-- .container -->
