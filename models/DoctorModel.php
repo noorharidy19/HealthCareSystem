@@ -1,5 +1,6 @@
 <?php
 require_once(__DIR__ . '/../models/UsersModel.php');
+require_once __DIR__ . '/../models/Appointments.php';
 ?>
 <?php
 class Doctor extends User {
@@ -165,6 +166,36 @@ class Doctor extends User {
         $row = $result->fetch_assoc();
 
         return $row ;
+    }
+    public static function getAppointments(int $doctorId): array {
+        global $conn;
+
+        // SQL query to fetch appointments with patient details
+        $query = "
+          SELECT 
+        a.time AS appointment_time, 
+        u.Name AS patient_name 
+    FROM 
+        appointments AS a
+    
+    INNER JOIN 
+        users AS u ON a.patientID = u.ID
+    WHERE 
+        a.doctorID = ?
+    ORDER BY 
+        a.time ASC";
+        $stmt = $conn->prepare($query);
+        $stmt->bind_param("i", $doctorId);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        // Fetch appointments
+        $appointments = [];
+        while ($row = $result->fetch_assoc()) {
+            $appointments[] = $row;
+        }
+
+        return $appointments;
     }
 }
 

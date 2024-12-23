@@ -42,5 +42,27 @@ class DoctorController {
             }
         }
     }
+    public function getAppointmentsView(int $doctorId): array {
+       
+
+        // Fetch appointments from the model
+        $appointments = Doctor::getAppointments($doctorId);
+
+        // Return the appointments for the view
+        return $appointments;
+    }
+    public function getAppointmentsAction(): void {
+        if (isset($_SESSION['user_id'])) {
+            $doctorId = $_SESSION['user_id'];
+            $appointments = Doctor::getAppointments($doctorId);
+
+            header('Content-Type: application/json');
+            echo json_encode($appointments);
+        } else {
+            http_response_code(403); // Forbidden
+            echo json_encode(["error" => "Unauthorized access."]);
+        }
+    }
+
 }
 ?>
