@@ -142,11 +142,11 @@ $controller->addSlotAction($doctorId);
           <div class="card-service">
           
           <div class="circle-shape bg-primary text-white">
-            <a href="view_patients.php">
+            <a href="viewPatients.php">
               <span class="mai-people"></span>
               </a>
             </div>
-            <p><span>View</span> Patients</p>
+            <p><span href="viewPatients.php">View</span> Patients</p>
             
             </a>
           </div>
